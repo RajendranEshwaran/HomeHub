@@ -2,7 +2,7 @@
 //  HomeHubUITestsLaunchTests.swift
 //  HomeHubUITests
 //
-//  Created by RajayGoms on 12/10/25.
+//  Created by Rajendran Eshwaran on 12/10/25.
 //
 
 import XCTest
