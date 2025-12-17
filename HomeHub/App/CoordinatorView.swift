@@ -10,7 +10,7 @@ import SwiftUI
 import Combine
 
 struct CoordinatorView: View {
-    @EnvironmentObject private var coordinator: Coordinator
+    @StateObject private var coordinator = Coordinator()
     var body: some View {
         NavigationStack(path: $coordinator.navigationPath) {
             coordinator.currentPageView(view: coordinator.rootPage)

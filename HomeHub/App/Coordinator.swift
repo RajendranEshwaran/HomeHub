@@ -51,15 +51,15 @@ class Coordinator: ObservableObject {
     
     func coordinatorRootToTop() { navigationPath.removeLast( navigationPath.count )}
     
-    func coordinatorSetRootPage(page: AppPages) {
-        self.rootPage = page
+    func coordinatorSetRootPage(root: AppPages) {
+        self.rootPage = root
         self.navigationPath.removeLast(navigationPath.count)
     }
     
     @ViewBuilder
     func currentPageView(view: AppPages) -> some View {
         switch view {
-        case .login: EmptyView()
+        case .login: LoginView()
         case .signup: EmptyView()
         case .forgot: EmptyView()
         case .verification: EmptyView()
