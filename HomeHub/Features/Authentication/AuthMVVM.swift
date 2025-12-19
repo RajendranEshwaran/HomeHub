@@ -5,3 +5,122 @@
 //  Created by RajayGoms on 12/17/25.
 //
 
+import SwiftUI
+import Combine
+import Foundation
+
+// MARK: AuthModel
+
+enum AuthStepsModel {
+    case emailEntry
+    case login
+    case signup
+    case verfication
+    case forgotpassword
+}
+
+enum AuthButtonState {
+    case next(isEnabled: Bool)
+    case login(isEnabled: Bool)
+    case signup(isEnabled: Bool)
+    case verifycode(isEnabled: Bool)
+    case forgotpassword(isEnabled: Bool)
+    
+    var title: String {
+        switch self {
+        case .next: return "Next"
+        case .login: return "Login"
+        case .signup: return "Signup"
+        case .verifycode: return "VerifyCode"
+        case .forgotpassword: return "ForgotPassword"
+        }
+    }
+    
+    var isEnabled: Bool {
+        switch self {
+        case .next(let enabled), .login(let enabled), .signup(let enabled), .verifycode(let enabled), .forgotpassword(let enabled): return enabled
+        }
+    }
+}
+
+@MainActor
+class AuthMVVM: ObservableObject {
+    @Published var authCurrentSteps: AuthStepsModel = .emailEntry
+    @Published var email: String = ""
+    @Published var password: String = ""
+    @Published var verificationCode: String = ""
+    @Published var isLoading: Bool = false
+    @Published var errorMessage: String? = ""
+    
+    var buttonState: AuthButtonState {
+        switch authCurrentSteps {
+        case .emailEntry: return .next(isEnabled: isEmailValid)
+        case .login: return .login(isEnabled: isLoginValid)
+        case .signup: return .signup(isEnabled: isSignupValid)
+        case .verfication: return .verifycode(isEnabled: isVerifyCodeValid)
+        case .forgotpassword: return .forgotpassword(isEnabled: isEmailValid)
+        }
+    }
+    
+    var isEmailValid: Bool {
+        email.contains("@") && !email.isEmpty
+    }
+    
+    var isLoginValid: Bool {
+        !password.isEmpty && password.count >= 6 && isEmailValid
+    }
+    
+    var isSignupValid: Bool {
+        !password.isEmpty && password.count >= 6 && isEmailValid
+    }
+    
+    var isVerifyCodeValid: Bool {
+        verificationCode.count == 6
+    }
+    
+    func handleButtonAction() async {
+        self.isLoading = true
+        self.errorMessage = nil
+        
+        do {
+            switch authCurrentSteps {
+            case .emailEntry: try await checkEmailExits()
+            case .login:
+            case .signup:
+            case .verfication:
+            case .forgotpassword:
+            }
+        } catch {
+            self.errorMessage = error.localizedDescription
+        }
+    }
+    
+    func checkEmailExits() async throws {
+        let emailExists = email.contains("existing")
+        authCurrentSteps = emailExists ? .login : .signup
+    }
+    
+    func attemptLogin() async throws {
+        authCurrentSteps = .verfication
+    }
+    
+    func attemptSignup() async throws {
+        authCurrentSteps = .verfication
+    }
+    
+    func attemptForgotPassword() async throws {
+        authCurrentSteps = .verfication
+    }
+    
+    func attemptVerifyPassword() async throws {
+        
+    }
+    
+    func switchToForgotPassword() {
+        authCurrentSteps = .forgotpassword
+    }
+        
+    func switchToSignup() {
+        authCurrentSteps = .signup
+    }
+}

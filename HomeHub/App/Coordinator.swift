@@ -59,7 +59,7 @@ class Coordinator: ObservableObject {
     @ViewBuilder
     func currentPageView(view: AppPages) -> some View {
         switch view {
-        case .login: LoginView()
+        case .login: AuthView()
         case .signup: EmptyView()
         case .forgot: EmptyView()
         case .verification: EmptyView()
