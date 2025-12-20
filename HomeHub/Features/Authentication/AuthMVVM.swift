@@ -85,10 +85,10 @@ class AuthMVVM: ObservableObject {
         do {
             switch authCurrentSteps {
             case .emailEntry: try await checkEmailExits()
-            case .login:
-            case .signup:
-            case .verfication:
-            case .forgotpassword:
+            case .login: try await attemptLogin()
+            case .signup: try await attemptSignup()
+            case .verfication: try await attemptVerifyPassword()
+            case .forgotpassword: try await attemptForgotPassword()
             }
         } catch {
             self.errorMessage = error.localizedDescription
