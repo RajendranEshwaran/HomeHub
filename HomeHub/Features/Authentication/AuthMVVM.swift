@@ -36,6 +36,16 @@ enum AuthButtonState {
         }
     }
     
+    var alternateButtonTitle: String {
+        switch self {
+        case .next: return "SignUp"
+        case .login: return "Reset Now"
+        case .signup: return ""
+        case .verifycode: return "Resent Code"
+        case .forgotpassword: return ""
+        }
+    }
+    
     var isEnabled: Bool {
         switch self {
         case .next(let enabled), .login(let enabled), .signup(let enabled), .verifycode(let enabled), .forgotpassword(let enabled): return enabled
@@ -48,6 +58,8 @@ class AuthMVVM: ObservableObject {
     @Published var authCurrentSteps: AuthStepsModel = .emailEntry
     @Published var email: String = ""
     @Published var password: String = ""
+    @Published var firstName: String = ""
+    @Published var lastName: String = ""
     @Published var verificationCode: String = ""
     @Published var isLoading: Bool = false
     @Published var errorMessage: String? = ""
