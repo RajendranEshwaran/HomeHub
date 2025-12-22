@@ -9,10 +9,13 @@ import SwiftUI
 
 struct AuthView: View {
     @StateObject private var authViewModel = AuthMVVM()
-    var body: some View {
-        ZStack {
+    @State private var navigationTitle = ""
+    
+    @Environment(\.dismiss) var dismiss
+   // var body: some View {
+       /* ZStack {
             Color.background
-            NavigationStack {
+            /*NavigationStack {
                 VStack(spacing: 24) {
                     headerView.padding(20)
                     
@@ -33,29 +36,66 @@ struct AuthView: View {
                 }.padding(12)
                 
                 //.navigationTitle(authNavigationTitle)
+            }*/
+            
+        }.ignoresSafeArea(edges: .all)*/
+        
+   // }
+    
+    var body: some View {
+            VStack(spacing: 0) {
+                
+                GenericNavigation(action: {}, navigationTitle: authNavigationTitle[0], isBackEnable: true, backgroundColor: .clear, foregroundColor: .text, leadingView: {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "chevron.left")
+                            .foregroundColor(.black)
+                            .aspectRatio(contentMode: .fit)
+                            
+                    }
+                }, trailingView: {
+                    Spacer()
+                }).frame(height: 50)
+                 
+                Spacer()
+                
+                headerView .padding(20)
+                
+                subHeaderView
+
+                inputFieldsView.padding(20)
+                
+                termsConditionView.padding(20)
+                
+                actionButton.padding(20)
+                
+                if let error = authViewModel.errorMessage {
+                    errorView(message: error)
+                }
+               
+                Spacer()
             }
-        }.ignoresSafeArea(edges: .all)
-    }
+            .navigationBarHidden(true)
+        }
+    
     
     @ViewBuilder
     private var headerView: some View {
         switch authViewModel.authCurrentSteps {
         default:
-            if let bodyText1 = self.authNavigationTitle?[1] {
-                Text(bodyText1)
+                Text(self.authNavigationTitle[1])
                     .font(.largeTitle)
                     .foregroundStyle(.text)
                     .fontWeight(.bold)
                     .lineLimit(2)
-            }
         }
     }
     
     @ViewBuilder
     private var subHeaderView: some View {
         HStack() {
-            if let bodyText1 = self.authNavigationTitle?[2] {
-                Text(bodyText1)
+                Text(self.authNavigationTitle[2])
                     .font(.subheadline)
                     .foregroundStyle(.text)
                     .fontWeight(.light)
@@ -69,19 +109,16 @@ struct AuthView: View {
                     
                     
                 })
-            }
         }.padding(.trailing, 120)
     }
     
     @ViewBuilder
     private var termsConditionView: some View {
-        if let termText = self.authNavigationTitle?[3] {
-            Text(termText)
+            Text(self.authNavigationTitle[3])
                 .foregroundStyle(.text)
                 .fontWeight(.thin)
                 .lineLimit(2)
                 .frame(alignment: .leading)
-        }
     }
     
     @ViewBuilder
@@ -141,7 +178,7 @@ struct AuthView: View {
         Text(message)
     }
     
-    private var authNavigationTitle: [String]? {
+    private var authNavigationTitle: [String] {
         switch authViewModel.authCurrentSteps {
         case .emailEntry: return ["Welcome",
                                   "Enter your email to log in", "Don't have account?", "I agreed the Privacy & Policy"]
