@@ -19,13 +19,17 @@ struct AuthView: View {
     var body: some View {
         VStack(spacing: 0) {
 
-            GenericNavigation(action: {}, navigationTitle: authNavigationTitle[0], isBackEnable: authViewModel.buttonState.allowsBackNavigation, backgroundColor: .clear, foregroundColor: .text, leadingView: {
+            GenericNavigation(action: {
+                
+            }, navigationTitle: authNavigationTitle[0], isBackEnable: authViewModel.buttonState.allowsBackNavigation, backgroundColor: .clear, foregroundColor: .text, leadingView: {
                 Button {
-                    dismiss()
+                    //handlingGoBackAction()
+                    authViewModel.goBack()
                 } label: {
                     Image(systemName: "chevron.left")
                         .foregroundColor(.black)
                         .aspectRatio(contentMode: .fit)
+                       
 
                 }
             }, trailingView: {
@@ -53,6 +57,7 @@ struct AuthView: View {
         .navigationBarHidden(true)
         .onAppear {
             authViewModel.setCoordinator(coordinator)
+            //authViewModel.authCurrentSteps = .emailEntry
         }
     }
     
@@ -77,7 +82,9 @@ struct AuthView: View {
                     .foregroundStyle(.text)
                     .fontWeight(.light)
 
-                Button(action: {}, label: {
+                Button(action: {
+                    authViewModel.handlingAlternateButtonAction()
+                }, label: {
                     Text(authViewModel.buttonState.alternateButtonTitle)
                         .font(.subheadline)
                         .font(.system(size: 12))
@@ -101,50 +108,31 @@ struct AuthView: View {
     @ViewBuilder
     private var inputFieldsView: some View {
         switch authViewModel.authCurrentSteps {
-        case .emailEntry, .forgotpassword:
-
-            TextField("Email", text: $authViewModel.email)
-                .textInputAutocapitalization(.never)
-                .keyboardType(.emailAddress)
-                .disabled(authViewModel.isLoading)
-                .padding(.horizontal, 12)
-                .frame(height: 60)
-                .background {
-                    // A 3x3 Mesh Gradient creates a liquid-like surface
-                    MeshGradient(width: 3, height: 3, points: [
-                        [0, 0], [0.5, 0], [1, 0],
-                        [0, 0.5], [0.5, 0.5], [1, 0.5],
-                        [0, 1], [0.5, 1], [1, 1]
-                    ], colors: [
-                        .background, .background, .background,
-                        .background, .background, .background,
-                        .background, .background, .background
-                    ])
-                    .overlay(.white.opacity(0.1)) // Glossy layer
-                    .clipShape(.rect(cornerRadius: 15))
-                }
+        case .emailEntry:
+            CustomTextField(placeholder: "Email", text: $authViewModel.email)
+            
         case .login:
-
-            SecureField("Password", text: $authViewModel.password)
-                .textFieldStyle(.roundedBorder)
-                .disabled(authViewModel.isLoading)
-
+            CustomSecureField(placeholder: "Password", text: $authViewModel.password)
+            
+        case .signup:
+            signUPFormField
             if authViewModel.authCurrentSteps == .signup {
                 Text("Password must be at least 8 characters")
                     .font(.caption)
                     .foregroundColor(.secondary)
             }
-        case .signup:
-            signUPFormField
+        case .forgotpassword:
+            CustomTextField(placeholder: "Your Password", text: $authViewModel.password)
+            CustomTextField(placeholder: "Re-type Your Password", text: $authViewModel.rePassword)
         case .verfication:
             TextField("Verification Code", text: $authViewModel.verificationCode)
                 .textFieldStyle(.roundedBorder)
                 .keyboardType(.numberPad)
-                .disabled(authViewModel.isLoading)
+                //.disabled(authViewModel.isLoading)
                 .multilineTextAlignment(.center)
                 .font(.system(.title2, design: .monospaced))
 
-            Text("Enter the 6-digit code sent to your email")
+            Text("Enter the 6-digit code sent to your email or notification")
                 .font(.caption)
                 .foregroundColor(.secondary)
         }
@@ -157,12 +145,12 @@ struct AuthView: View {
     private var authNavigationTitle: [String] {
         switch authViewModel.authCurrentSteps {
         case .emailEntry: return ["Welcome",
-                                  "Enter your email to log in", "Don't have account?", "I agreed the Privacy & Policy"]
+                                  "Enter your email to log in", "Don't have account?", "I agreed the Privacy & Policy, Terms and Conditions"]
         case .login: return ["Login",
                              "Enter your password to log in", "Forgot your password?", "I agreed the Privacy & Policy"]
-        case .signup: return ["Signup", "Let's make you new member of home", "Already have account", "I agreed the Privacy & Policy"]
+        case .signup: return ["Signup", "Let's make you new member of home", "Already have account?", "I agreed the Privacy & Policy"]
         case .verfication: return ["Verification", "Enter your verification code to log in", "Didn't get the code", "I agreed the Privacy & Policy"]
-        case .forgotpassword: return ["Reset Password", "Create your new password", "Don't have account", "I agreed the Privacy & Policy"]
+        case .forgotpassword: return ["Reset Password", "Create your new password", "Please enter your passwords", "I agreed the Privacy & Policy"]
         }
     }
 
@@ -171,9 +159,7 @@ struct AuthView: View {
             CustomTextField(placeholder: "FirstName", text: $authViewModel.firstName)
             CustomTextField(placeholder: "LastName", text: $authViewModel.lastName)
             CustomTextField(placeholder: "Email", text: $authViewModel.email)
-            SecureField("Password", text: $authViewModel.password)
-                .textFieldStyle(.roundedBorder)
-                .disabled(authViewModel.isLoading)
+            CustomSecureField(placeholder: "Password", text: $authViewModel.password)
         }
     }
 
@@ -186,6 +172,9 @@ struct AuthView: View {
             Text(authViewModel.buttonState.title)
         }, state: authViewModel.authCurrentSteps)
     }
+    
+
+   
 }
 
 

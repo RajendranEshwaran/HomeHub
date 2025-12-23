@@ -40,7 +40,7 @@ enum AuthButtonState {
         switch self {
         case .next: return "SignUp"
         case .login: return "Reset Now"
-        case .signup: return ""
+        case .signup: return "Login"
         case .verifycode: return "Resent Code"
         case .forgotpassword: return ""
         }
@@ -69,6 +69,7 @@ class AuthMVVM: ObservableObject {
     @Published var authCurrentSteps: AuthStepsModel = .emailEntry
     @Published var email: String = ""
     @Published var password: String = ""
+    @Published var rePassword: String = ""
     @Published var firstName: String = ""
     @Published var lastName: String = ""
     @Published var verificationCode: String = ""
@@ -139,9 +140,6 @@ class AuthMVVM: ObservableObject {
     }
     
     func attemptLogin() async throws {
-//        if isEmailValid && self.password.count >= 6 {
-//
-//        }
         coordinator?.coordinatorSetRootPage(root: .homeView)
     }
     
@@ -164,4 +162,23 @@ class AuthMVVM: ObservableObject {
     func switchToSignup() {
         authCurrentSteps = .signup
     }
+    
+    func goBack() {
+        switch self.authCurrentSteps {
+        case .emailEntry: self.authCurrentSteps = self.authCurrentSteps
+        case .login, .signup, .verfication: self.authCurrentSteps = .emailEntry
+        case .forgotpassword: self.authCurrentSteps = .login
+        }
+    }
+    
+     func handlingAlternateButtonAction() {
+        switch self.authCurrentSteps {
+        case .emailEntry: self.authCurrentSteps = .signup
+        case .login: self.authCurrentSteps = .forgotpassword
+        case .signup: self.authCurrentSteps = .emailEntry
+        default: break 
+        }
+    }
+    
+    
 }
