@@ -6,78 +6,55 @@
 //
 
 import SwiftUI
+import Combine
 
 struct AuthView: View {
+
+    @EnvironmentObject private var coordinator: Coordinator
     @StateObject private var authViewModel = AuthMVVM()
     @State private var navigationTitle = ""
-    
+    @State private var navigationBackButton: Bool = false
     @Environment(\.dismiss) var dismiss
-   // var body: some View {
-       /* ZStack {
-            Color.background
-            /*NavigationStack {
-                VStack(spacing: 24) {
-                    headerView.padding(20)
-                    
-                    subHeaderView
 
-                    inputFieldsView.padding(20)
-                    
-                    termsConditionView.padding(20)
-                    
-                    actionButton.padding(20)
-                    
-                    if let error = authViewModel.errorMessage {
-                        errorView(message: error)
-                    }
-                    
-                    // secondaryActionsView
-                    
-                }.padding(12)
-                
-                //.navigationTitle(authNavigationTitle)
-            }*/
-            
-        }.ignoresSafeArea(edges: .all)*/
-        
-   // }
-    
     var body: some View {
-            VStack(spacing: 0) {
-                
-                GenericNavigation(action: {}, navigationTitle: authNavigationTitle[0], isBackEnable: true, backgroundColor: .clear, foregroundColor: .text, leadingView: {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image(systemName: "chevron.left")
-                            .foregroundColor(.black)
-                            .aspectRatio(contentMode: .fit)
-                            
-                    }
-                }, trailingView: {
-                    Spacer()
-                }).frame(height: 50)
-                 
-                Spacer()
-                
-                headerView .padding(20)
-                
-                subHeaderView
+        VStack(spacing: 0) {
 
-                inputFieldsView.padding(20)
-                
-                termsConditionView.padding(20)
-                
-                actionButton.padding(20)
-                
-                if let error = authViewModel.errorMessage {
-                    errorView(message: error)
+            GenericNavigation(action: {}, navigationTitle: authNavigationTitle[0], isBackEnable: authViewModel.buttonState.allowsBackNavigation, backgroundColor: .clear, foregroundColor: .text, leadingView: {
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: "chevron.left")
+                        .foregroundColor(.black)
+                        .aspectRatio(contentMode: .fit)
+
                 }
-               
-                Spacer()
+            }, trailingView: {
+                //Spacer()
+            }).frame(height: 50)
+
+            Spacer()
+
+            headerView.padding(20)
+
+            subHeaderView
+
+            inputFieldsView.padding(20)
+
+            termsConditionView.padding(20)
+
+            actionButton.padding(20)
+
+            if let error = authViewModel.errorMessage {
+                errorView(message: error)
             }
-            .navigationBarHidden(true)
+
+            Spacer()
         }
+        .navigationBarHidden(true)
+        .onAppear {
+            authViewModel.setCoordinator(coordinator)
+        }
+    }
     
     
     @ViewBuilder
@@ -91,7 +68,7 @@ struct AuthView: View {
                     .lineLimit(2)
         }
     }
-    
+
     @ViewBuilder
     private var subHeaderView: some View {
         HStack() {
@@ -99,19 +76,19 @@ struct AuthView: View {
                     .font(.subheadline)
                     .foregroundStyle(.text)
                     .fontWeight(.light)
-                
+
                 Button(action: {}, label: {
                     Text(authViewModel.buttonState.alternateButtonTitle)
                         .font(.subheadline)
                         .font(.system(size: 12))
                         .foregroundStyle(.text)
                         .fontWeight(.semibold)
-                    
-                    
+
+
                 })
         }.padding(.trailing, 120)
     }
-    
+
     @ViewBuilder
     private var termsConditionView: some View {
             Text(self.authNavigationTitle[3])
@@ -120,18 +97,17 @@ struct AuthView: View {
                 .lineLimit(2)
                 .frame(alignment: .leading)
     }
-    
+
     @ViewBuilder
     private var inputFieldsView: some View {
         switch authViewModel.authCurrentSteps {
         case .emailEntry, .forgotpassword:
-            
+
             TextField("Email", text: $authViewModel.email)
                 .textInputAutocapitalization(.never)
                 .keyboardType(.emailAddress)
                 .disabled(authViewModel.isLoading)
                 .padding(.horizontal, 12)
-            //.padding(.vertical, 10)
                 .frame(height: 60)
                 .background {
                     // A 3x3 Mesh Gradient creates a liquid-like surface
@@ -148,11 +124,11 @@ struct AuthView: View {
                     .clipShape(.rect(cornerRadius: 15))
                 }
         case .login:
-            
+
             SecureField("Password", text: $authViewModel.password)
                 .textFieldStyle(.roundedBorder)
                 .disabled(authViewModel.isLoading)
-            
+
             if authViewModel.authCurrentSteps == .signup {
                 Text("Password must be at least 8 characters")
                     .font(.caption)
@@ -167,17 +143,17 @@ struct AuthView: View {
                 .disabled(authViewModel.isLoading)
                 .multilineTextAlignment(.center)
                 .font(.system(.title2, design: .monospaced))
-            
+
             Text("Enter the 6-digit code sent to your email")
                 .font(.caption)
                 .foregroundColor(.secondary)
         }
     }
-    
+
     private func errorView(message: String) -> some View {
         Text(message)
     }
-    
+
     private var authNavigationTitle: [String] {
         switch authViewModel.authCurrentSteps {
         case .emailEntry: return ["Welcome",
@@ -189,7 +165,7 @@ struct AuthView: View {
         case .forgotpassword: return ["Reset Password", "Create your new password", "Don't have account", "I agreed the Privacy & Policy"]
         }
     }
-    
+
     private var signUPFormField: some View {
         VStack {
             CustomTextField(placeholder: "FirstName", text: $authViewModel.firstName)
@@ -200,13 +176,15 @@ struct AuthView: View {
                 .disabled(authViewModel.isLoading)
         }
     }
-    
+
     private var actionButton: some View {
         AuthButton(buttonAction: {
-            
+            Task {
+                await authViewModel.handleButtonAction()
+            }
         }, content: {
             Text(authViewModel.buttonState.title)
-        })
+        }, state: authViewModel.authCurrentSteps)
     }
 }
 

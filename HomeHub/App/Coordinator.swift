@@ -14,6 +14,7 @@ enum AppPages: Hashable {
     case signup
     case forgot
     case verification
+    case homeView
 }
 
 enum AppSheets: String, Identifiable {
@@ -63,6 +64,7 @@ class Coordinator: ObservableObject {
         case .signup: EmptyView()
         case .forgot: EmptyView()
         case .verification: EmptyView()
+        case .homeView: HomeView()
         }
     }
     

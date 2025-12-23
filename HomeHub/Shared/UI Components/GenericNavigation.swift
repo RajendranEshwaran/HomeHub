@@ -35,19 +35,20 @@ struct GenericNavigation<leadingView: View, trailingView: View> : View {
             backgroundColor
                 .ignoresSafeArea(edges: .top)
                 HStack {
-                    leading
-                        .frame(width: 44, height: 44)
-                    
+                    if isBackEnable {
+                        leading
+                            .frame(width: 44, height: 44)
+                    }
                     Spacer()
-                    
                     Text(navigationTitle)
                         .font(.headline)
                         .foregroundColor(foregroundColor)
                     
                     Spacer()
-                    
-                    trailing
-                        .frame(width: 44, height: 44)
+                    if !isBackEnable {
+                        trailing
+                            .frame(width: 44, height: 44)
+                    }
                 }
                     .padding(.horizontal)
         }

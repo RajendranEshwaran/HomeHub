@@ -11,10 +11,11 @@ struct AuthButton<Content: View> : View {
     
     let buttonAction: () -> Void
     let content: Content
-    
-    init(buttonAction: @escaping () -> Void, @ViewBuilder content: () -> Content) {
+    let state: AuthStepsModel
+    init(buttonAction: @escaping () -> Void, @ViewBuilder content: () -> Content, state: AuthStepsModel) {
         self.buttonAction = buttonAction
         self.content = content()
+        self.state = state
     }
     
     var body: some View {
@@ -23,6 +24,7 @@ struct AuthButton<Content: View> : View {
                     .frame(maxWidth: .infinity)
                     .frame(height: 60)
                     .foregroundStyle(.white)
+                    .fontWeight(.semibold)
                    // .padding(.horizontal, 100)
                    // .padding(.vertical, 15)
                     .background {

@@ -51,6 +51,17 @@ enum AuthButtonState {
         case .next(let enabled), .login(let enabled), .signup(let enabled), .verifycode(let enabled), .forgotpassword(let enabled): return enabled
         }
     }
+    
+    // Control back navigation based on state
+    var allowsBackNavigation: Bool {
+        switch self {
+        case .next: return false          // Can't go back from welcome
+        case .login: return true           // Can go back to welcome
+        case .signup: return true          // Can go back to previous
+        case .verifycode: return true    // Can go back to home
+        case .forgotpassword: return true           // Can't go back, completes flow
+        }
+    }
 }
 
 @MainActor
@@ -63,14 +74,29 @@ class AuthMVVM: ObservableObject {
     @Published var verificationCode: String = ""
     @Published var isLoading: Bool = false
     @Published var errorMessage: String? = ""
+
+    private weak var coordinator: Coordinator?
+
+    init(coordinator: Coordinator? = nil) {
+            self.coordinator = coordinator
+        }
+
+    func setCoordinator(_ coordinator: Coordinator) {
+        self.coordinator = coordinator
+    }
     
     var buttonState: AuthButtonState {
         switch authCurrentSteps {
-        case .emailEntry: return .next(isEnabled: isEmailValid)
-        case .login: return .login(isEnabled: isLoginValid)
-        case .signup: return .signup(isEnabled: isSignupValid)
-        case .verfication: return .verifycode(isEnabled: isVerifyCodeValid)
-        case .forgotpassword: return .forgotpassword(isEnabled: isEmailValid)
+        case .emailEntry:
+            return .next(isEnabled: isEmailValid)
+        case .login:
+            return .login(isEnabled: isLoginValid)
+        case .signup:
+            return .signup(isEnabled: isSignupValid)
+        case .verfication:
+            return .verifycode(isEnabled: isVerifyCodeValid)
+        case .forgotpassword:
+            return .forgotpassword(isEnabled: isEmailValid)
         }
     }
     
@@ -109,11 +135,14 @@ class AuthMVVM: ObservableObject {
     
     func checkEmailExits() async throws {
         let emailExists = email.contains("existing")
-        authCurrentSteps = emailExists ? .login : .signup
+        authCurrentSteps = .login
     }
     
     func attemptLogin() async throws {
-        authCurrentSteps = .verfication
+//        if isEmailValid && self.password.count >= 6 {
+//
+//        }
+        coordinator?.coordinatorSetRootPage(root: .homeView)
     }
     
     func attemptSignup() async throws {
