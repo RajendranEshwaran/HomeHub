@@ -21,7 +21,7 @@ struct AuthView: View {
 
             GenericNavigation(action: {
                 
-            }, navigationTitle: authNavigationTitle[0], isBackEnable: authViewModel.buttonState.allowsBackNavigation, backgroundColor: .clear, foregroundColor: .text, leadingView: {
+            }, navigationTitle: authNavigationTitle[0], isBackEnable: authViewModel.buttonState.allowsBackNavigation, isForwardEnable: false, backgroundColor: .clear, foregroundColor: .text, leadingView: {
                 Button {
                     //handlingGoBackAction()
                     authViewModel.goBack()
@@ -57,7 +57,7 @@ struct AuthView: View {
         .navigationBarHidden(true)
         .onAppear {
             authViewModel.setCoordinator(coordinator)
-        }
+        }.environmentObject(coordinator)
     }
     
     
@@ -179,4 +179,5 @@ struct AuthView: View {
 
 #Preview {
     AuthView()
+        .environmentObject(Coordinator())
 }

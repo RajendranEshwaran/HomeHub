@@ -11,8 +11,8 @@ struct AuthButton<Content: View> : View {
     
     let buttonAction: () -> Void
     let content: Content
-    let state: AuthStepsModel
-    init(buttonAction: @escaping () -> Void, @ViewBuilder content: () -> Content, state: AuthStepsModel) {
+    let state: AuthStepsModel?
+    init(buttonAction: @escaping () -> Void, @ViewBuilder content: () -> Content, state: AuthStepsModel?) {
         self.buttonAction = buttonAction
         self.content = content()
         self.state = state

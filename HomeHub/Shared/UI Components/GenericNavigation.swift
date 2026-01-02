@@ -13,16 +13,18 @@ struct GenericNavigation<leadingView: View, trailingView: View> : View {
     let action:() -> Void
     var navigationTitle: String
     var isBackEnable: Bool = false
+    var isForwardEnable: Bool = false
     let backgroundColor: Color
     let foregroundColor: Color
     var leading: leadingView
     var trailing: trailingView
     
     
-    init(action: @escaping () -> Void, navigationTitle: String, isBackEnable: Bool, backgroundColor: Color, foregroundColor: Color, @ViewBuilder leadingView: () -> leadingView, @ViewBuilder trailingView: () -> trailingView) {
+    init(action: @escaping () -> Void, navigationTitle: String, isBackEnable: Bool, isForwardEnable: Bool, backgroundColor: Color, foregroundColor: Color, @ViewBuilder leadingView: () -> leadingView, @ViewBuilder trailingView: () -> trailingView) {
         self.action = action
         self.navigationTitle = navigationTitle
         self.isBackEnable = isBackEnable
+        self.isForwardEnable = isForwardEnable
         self.leading = leadingView()
         self.trailing = trailingView()
         self.backgroundColor = backgroundColor
@@ -48,7 +50,7 @@ struct GenericNavigation<leadingView: View, trailingView: View> : View {
                         .frame(alignment: .center)
                     
                     Spacer()
-                    if !isBackEnable {
+                    if isForwardEnable {
                         trailing
                             .frame(width: 44, height: 44)
                     }

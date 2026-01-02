@@ -9,14 +9,38 @@ import SwiftUI
 import Combine
 
 struct HomeView: View {
+    
     var body: some View {
         ZStack {
             Color.background
-            GenericNavigation(action: {}, navigationTitle: "", isBackEnable: false, backgroundColor: .clear, foregroundColor: .text, leadingView: {
+            VStack(spacing: 0) {
+               
+                //MARK: Navigation
+                GenericNavigation(action: {}, navigationTitle: "Home View", isBackEnable: true, isForwardEnable: true, backgroundColor: .clear, foregroundColor: .text, leadingView: {
+                    //MARK: leading button action
+
+                    CollectionButton(action: {}, label: {
+                        Image(systemName: "square.grid.2x2")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 15, height: 15)
+                    }, bgColor: .indigo, clipShape: 30, radius: 6)
+                    
+                    
+                }, trailingView: {
+                    //MARK: trailing button action
+                    
+                    CollectionButton(action: {}, label: {
+                        Image(systemName: "person.crop.circle")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 25, height: 25)
+                    }, bgColor: .indigo, clipShape: 30, radius: 6)
+                   
+                }).frame(height: 50)
                 
-            }, trailingView: {
-                
-            })
+                //Spacer()
+            }
         }.ignoresSafeArea(edges: .all)
     }
 }
@@ -24,4 +48,5 @@ struct HomeView: View {
 
 #Preview {
     HomeView()
+        .environmentObject(Coordinator())
 }
