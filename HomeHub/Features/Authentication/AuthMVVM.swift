@@ -30,7 +30,7 @@ enum AuthButtonState {
         switch self {
         case .next: return "Next"
         case .login: return "Login"
-        case .signup: return "Signup"
+        case .signup: return "Create Account"
         case .verifycode: return "VerifyCode"
         case .forgotpassword: return "ForgotPassword"
         }
@@ -152,7 +152,7 @@ class AuthMVVM: ObservableObject {
     }
     
     func attemptVerifyPassword() async throws {
-        
+        coordinator?.coordinatorSetRootPage(root: .homeView)
     }
     
     func switchToForgotPassword() {

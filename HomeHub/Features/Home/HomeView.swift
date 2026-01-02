@@ -10,7 +10,14 @@ import Combine
 
 struct HomeView: View {
     var body: some View {
-        Text("Home View")
+        ZStack {
+            Color.background
+            GenericNavigation(action: {}, navigationTitle: "", isBackEnable: false, backgroundColor: .clear, foregroundColor: .text, leadingView: {
+                
+            }, trailingView: {
+                
+            })
+        }.ignoresSafeArea(edges: .all)
     }
 }
 

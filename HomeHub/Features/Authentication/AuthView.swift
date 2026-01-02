@@ -57,7 +57,6 @@ struct AuthView: View {
         .navigationBarHidden(true)
         .onAppear {
             authViewModel.setCoordinator(coordinator)
-            //authViewModel.authCurrentSteps = .emailEntry
         }
     }
     
