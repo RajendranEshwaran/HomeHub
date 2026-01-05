@@ -27,7 +27,7 @@ struct HomeView: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 15, height: 15)
-                    }, bgColor: .indigo, clipShape: 30, radius: 6)
+                    }, bgColor: .indigo, clipShape: 30, radius: 6, size: CGSize(width: 50, height: 50))
 
 
                 }, trailingView: {
@@ -38,33 +38,93 @@ struct HomeView: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 25, height: 25)
-                    }, bgColor: .indigo, clipShape: 30, radius: 6)
+                    }, bgColor: .indigo, clipShape: 30, radius: 6, size: CGSize(width: 50, height: 50))
 
-                }).frame(height: 50)
+                }).frame(height: 60)
 
                 Spacer()
 
                 ScrollView {
-                    HStack(spacing: 15) {
-                        //MARK: Wish Display
-                        ForEach(viewModel.wishes) { wish in
-                            CollectionButton(action: {}, label: {
-                                HStack {
-                                    Image(systemName: wish.icon)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 20, height: 20)
-
-                                    Text(wish.greeting)
-                                        .font(.headline)
+                    GeometryReader { geometry in
+                        VStack {
+                            HStack(spacing: 15) {
+                                //MARK: Wish Display
+                                ForEach(viewModel.wishes) { wish in
+                                    CollectionButton(action: {}, label: {
+                                        HStack {
+                                            Image(systemName: wish.icon)
+                                                .resizable()
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(width: 20, height: 20)
+                                            
+                                            Text(wish.greeting)
+                                                .font(.headline)
+                                        }
+                                        .padding(.horizontal, 10)
+                                    }, bgColor: wish.bgColor, clipShape: 30, radius: 10, size: CGSize(width: 180, height: 55))
                                 }
-                                .padding(.horizontal, 10)
-                            }, bgColor: wish.bgColor, clipShape: 30, radius: 10, size: CGSize(width: 200, height: 50))
+                            }
+                            HStack(spacing: 15) {
+                                //MARK: Home Status Display
+                                ForEach(viewModel.homeStatuses) { status in
+                                    CollectionButton(action: {}, label: {
+                                        HStack {
+                                            Image(systemName: status.icon)
+                                                .resizable()
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(width: 20, height: 20)
+                                            
+                                            Text(status.status)
+                                                .font(.headline)
+                                        }
+                                        .padding(.horizontal, 10)
+                                    }, bgColor: status.bgColor, clipShape: 30, radius: 10, size: CGSize(width: 180, height: 55))
+                                }
+                            }
+                            
+                            // MARK: White line
+                            Rectangle()
+                                .fill(.white)
+                                .frame(width: geometry.size.width, height: 6)
+                                .padding(.horizontal, 20)
+                                .padding(.vertical, 20)
+                            
+                            // MARK: Available Devices
+                            HStack {
+                                Text("Available Devices")
+                                    .font(.system(size: 15, weight: .bold, design: .default))
+                                    .padding(.leading, 20)
+                                
+                                ZStack() {
+                                    Text("10")
+                                        .font(.headline)
+                                        .foregroundStyle(.white)
+                                    Circle()
+                                        .fill(Color.black)
+                                        .frame(width: 25, height: 25)
+                                        .zIndex(-1)
+                                }
+                                    
+                                Spacer()
+                            }
+                            
                         }
+                        .padding(.top, 20)
+                        .frame(width: geometry.size.width)
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.top, 20)
+                    
                 }
+                
+                // MARK: Plus button
+                CollectionButton(action: {}, label: {
+                    HStack {
+                        Image(systemName: "plus")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 20, height: 20)
+                    }
+                    .padding(.horizontal, 10)
+                }, bgColor: .buttonPlus, clipShape: 30, radius: 7, size: CGSize(width: 60, height: 60))
             }
         }
     }
