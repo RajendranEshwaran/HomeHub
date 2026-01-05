@@ -15,6 +15,7 @@ enum AppPages: Hashable {
     case forgot
     case verification
     case homeView
+    case addDeviceView
 }
 
 enum AppSheets: String, Identifiable {
@@ -65,6 +66,7 @@ class Coordinator: ObservableObject {
         case .forgot: EmptyView()
         case .verification: EmptyView()
         case .homeView: HomeView()
+        case .addDeviceView: AddDeviceView()
         }
     }
     

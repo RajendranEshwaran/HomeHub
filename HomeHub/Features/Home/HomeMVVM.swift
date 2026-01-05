@@ -25,10 +25,20 @@ struct HomeStatus: Identifiable {
     let bgColor: Color
 }
 
+//MARK: - Home Room Model
+struct HomeRoom: Identifiable {
+    let id = UUID()
+    let roomName: String
+    let icon: String
+    let bgColor: Color
+    let deviceCount: Int
+}
+
 //MARK: - HomeViewModel
 class HomeViewModel: ObservableObject {
     @Published var wishes: [Wish]
     @Published var homeStatuses: [HomeStatus]
+    @Published var homeRooms: [HomeRoom]
     @Published var availableDevices: Int = 0
 
     init() {
@@ -40,6 +50,13 @@ class HomeViewModel: ObservableObject {
         self.homeStatuses = [
             HomeStatus(status: "I'm leaving", icon: "figure.walk.departure", bgColor: .green),
             HomeStatus(status: "In home", icon: "house.fill", bgColor: .indigo)
+        ]
+
+        self.homeRooms = [
+            HomeRoom(roomName: "Living Room", icon: "sofa.fill", bgColor: .orange, deviceCount: 4),
+            HomeRoom(roomName: "Bedroom", icon: "bed.double.fill", bgColor: .purple, deviceCount: 3),
+            HomeRoom(roomName: "Kitchen", icon: "fork.knife", bgColor: .green, deviceCount: 2),
+            HomeRoom(roomName: "Bathroom", icon: "shower.fill", bgColor: .blue, deviceCount: 1)
         ]
     }
 }

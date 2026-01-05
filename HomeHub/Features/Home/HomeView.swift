@@ -10,7 +10,7 @@ import Combine
 
 struct HomeView: View {
     @StateObject private var viewModel = HomeViewModel()
-
+    @EnvironmentObject private var coordinator: Coordinator
     var body: some View {
         ZStack {
             Color.background
@@ -92,7 +92,7 @@ struct HomeView: View {
                             // MARK: Available Devices
                             HStack {
                                 Text("Available Devices")
-                                    .font(.system(size: 15, weight: .bold, design: .default))
+                                    .font(.system(size: 18, weight: .bold, design: .default))
                                     .padding(.leading, 20)
                                 
                                 ZStack() {
@@ -107,7 +107,11 @@ struct HomeView: View {
                                     
                                 Spacer()
                             }
-                            
+                            // MARK: Rooms Names
+                            Text("First room")
+                                .font(.system(size: 15, weight: .regular, design: .default))
+                                .foregroundStyle(.gray)
+                           
                         }
                         .padding(.top, 20)
                         .frame(width: geometry.size.width)
@@ -116,7 +120,9 @@ struct HomeView: View {
                 }
                 
                 // MARK: Plus button
-                CollectionButton(action: {}, label: {
+                CollectionButton(action: {
+                    coordinator.coordinatorPushPage(page: .addDeviceView)
+                }, label: {
                     HStack {
                         Image(systemName: "plus")
                             .resizable()
@@ -126,7 +132,8 @@ struct HomeView: View {
                     .padding(.horizontal, 10)
                 }, bgColor: .buttonPlus, clipShape: 30, radius: 7, size: CGSize(width: 60, height: 60))
             }
-        }
+        }.environmentObject(coordinator)
+        .navigationBarHidden(true)
     }
 }
 
