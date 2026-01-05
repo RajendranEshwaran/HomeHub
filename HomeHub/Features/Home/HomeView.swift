@@ -11,6 +11,11 @@ import Combine
 struct HomeView: View {
     @StateObject private var viewModel = HomeViewModel()
     @EnvironmentObject private var coordinator: Coordinator
+    let rows = [
+            GridItem(.flexible(), spacing: 200),
+            GridItem(.flexible(), spacing: 200)
+        ]
+    
     var body: some View {
         ZStack {
             Color.background
@@ -41,8 +46,6 @@ struct HomeView: View {
                     }, bgColor: .indigo, clipShape: 30, radius: 6, size: CGSize(width: 50, height: 50))
 
                 }).frame(height: 60)
-
-                Spacer()
 
                 ScrollView {
                     GeometryReader { geometry in
@@ -94,7 +97,7 @@ struct HomeView: View {
                                 Text("Available Devices")
                                     .font(.system(size: 18, weight: .bold, design: .default))
                                     .padding(.leading, 20)
-                                
+
                                 ZStack() {
                                     Text("10")
                                         .font(.headline)
@@ -104,35 +107,68 @@ struct HomeView: View {
                                         .frame(width: 25, height: 25)
                                         .zIndex(-1)
                                 }
-                                    
+
                                 Spacer()
                             }
+
                             // MARK: Rooms Names
-                            Text("First room")
-                                .font(.system(size: 15, weight: .regular, design: .default))
-                                .foregroundStyle(.gray)
-                           
+                            HStack {
+                                Text("First room")
+                                    .font(.system(size: 15, weight: .regular, design: .default))
+                                    .foregroundStyle(.gray)
+                                    .padding(.leading, 20)
+
+                                Spacer()
+                            }
+                            .padding(.top, 10)
+
+                            // MARK: Device Cards
+                            LazyHGrid(rows: rows, spacing: 50) {
+                                ForEach(viewModel.devices) { device in
+                                    DeviceCard(
+                                        device: device,
+                                        onToggle: { isOn in
+                                            // Handle toggle action
+                                        },
+                                        onEdit: {
+                                            // Handle edit action
+                                        })
+                                }
+                            }
+                            .padding(.top, 55)
+                            .padding(.horizontal, 20)
+                        
                         }
                         .padding(.top, 20)
                         .frame(width: geometry.size.width)
                     }
                     
                 }
-                
-                // MARK: Plus button
-                CollectionButton(action: {
-                    coordinator.coordinatorPushPage(page: .addDeviceView)
-                }, label: {
-                    HStack {
-                        Image(systemName: "plus")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 20, height: 20)
-                    }
-                    .padding(.horizontal, 10)
-                }, bgColor: .buttonPlus, clipShape: 30, radius: 7, size: CGSize(width: 60, height: 60))
             }
-        }.environmentObject(coordinator)
+
+            // MARK: Plus button
+            VStack {
+                Spacer()
+                HStack {
+                    Spacer()
+                    CollectionButton(action: {
+                        coordinator.coordinatorPushPage(page: .addDeviceView)
+                    }, label: {
+                        HStack {
+                            Image(systemName: "plus")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 20, height: 20)
+                        }
+                        .padding(.horizontal, 10)
+                    }, bgColor: .buttonPlus, clipShape: 30, radius: 7, size: CGSize(width: 60, height: 60))
+                    Spacer()
+                }
+                .padding(.bottom, 20)
+            }
+        }
+        
+        .environmentObject(coordinator)
         .navigationBarHidden(true)
     }
 }
