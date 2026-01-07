@@ -99,7 +99,7 @@ struct HomeView: View {
                                     .padding(.leading, 20)
 
                                 ZStack() {
-                                    Text("10")
+                                    Text("\(viewModel.availableDevices)")
                                         .font(.headline)
                                         .foregroundStyle(.white)
                                     Circle()
@@ -128,7 +128,7 @@ struct HomeView: View {
                                     DeviceCard(
                                         device: device,
                                         onToggle: { isOn in
-                                            // Handle toggle action
+                                            viewModel.toggleDevice(device: device, isOn: isOn)
                                         },
                                         onEdit: {
                                             // Handle edit action
@@ -167,8 +167,8 @@ struct HomeView: View {
                 .padding(.bottom, 20)
             }
         }
-        
         .environmentObject(coordinator)
+        .environmentObject(viewModel)
         .navigationBarHidden(true)
     }
 }

@@ -77,5 +77,29 @@ class HomeViewModel: ObservableObject {
             Device(deviceName: "Smart Lights", deviceStatus: "Disconnected", iconLeft: "lightbulb.fill", iconRight: "antenna.radiowaves.left.and.right.slash", bgColor: .yellow, isOn: false),
             Device(deviceName: "Speaker", deviceStatus: "Playing", iconLeft: "hifispeaker.fill", iconRight: "music.note", bgColor: .purple, isOn: true)
         ]
+        updateAvailableDevices()
+    }
+
+    func addDevice(deviceName: String, deviceStatus: String, iconLeft: String, iconRight: String, bgColor: Color) {
+        let newDevice = Device(
+            deviceName: deviceName,
+            deviceStatus: deviceStatus,
+            iconLeft: iconLeft,
+            iconRight: iconRight,
+            bgColor: bgColor,
+            isOn: false
+        )
+        devices.append(newDevice)
+        updateAvailableDevices()
+    }
+
+    func toggleDevice(device: Device, isOn: Bool) {
+        if let index = devices.firstIndex(where: { $0.id == device.id }) {
+            devices[index].isOn = isOn
+        }
+    }
+
+    private func updateAvailableDevices() {
+        availableDevices = devices.count
     }
 }
