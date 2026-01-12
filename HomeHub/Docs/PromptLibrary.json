@@ -1,0 +1,103 @@
+{
+  "project": "HomeHub - Smart Home Control iOS Application",
+  "architecture": "MVVM + Coordinator Pattern",
+  "tech_stack": ["SwiftUI", "Combine", "async/await", "SwiftData"],
+  "prompt_library": {
+    
+    "feature_development": {
+      "new_feature_prompt": "Create a [FEATURE_NAME] feature for HomeHub smart home app using MVVM + Coordinator pattern with SwiftUI. Requirements: [LIST_REQUIREMENTS]. The feature should include: 1) SwiftUI View with proper state management, 2) ViewModel using Combine and async/await for business logic, 3) Coordinator for navigation, 4) SwiftData models if persistence needed, 5) Unit tests. Follow iOS best practices and ensure thread-safe operations.",
+      
+      "device_integration": "Implement integration for [DEVICE_TYPE] (e.g., smart lights, thermostat, camera) in HomeHub. Include: 1) Device discovery and pairing flow, 2) Real-time status updates using Combine, 3) Control interface in SwiftUI, 4) Error handling for connectivity issues, 5) SwiftData persistence for device settings, 6) Coordinator-based navigation for setup wizard.",
+      
+      "automation_rule": "Create an automation rule builder for HomeHub that allows users to [AUTOMATION_DESCRIPTION]. Use SwiftUI for the UI, Combine for reactive updates, and SwiftData for rule persistence. Include: 1) Trigger selection interface, 2) Condition builder, 3) Action configuration, 4) Rule validation logic, 5) Background execution support using async/await.",
+      
+      "dashboard_widget": "Design and implement a dashboard widget for [DEVICE_CATEGORY] in HomeHub. Requirements: 1) SwiftUI view with real-time updates, 2) Combine publishers for device state, 3) Gesture-based controls, 4) Optimistic UI updates with error rollback, 5) Accessibility support, 6) Custom animations for state changes.",
+      
+      "scene_management": "Build a scene management feature for HomeHub allowing users to [SCENE_FUNCTIONALITY]. Include: 1) Scene creation and editing UI, 2) Multi-device coordination, 3) Scene activation with feedback, 4) SwiftData persistence, 5) Conflict resolution for overlapping scenes, 6) Undo/redo support."
+    },
+    
+    "architecture_design": {
+      "coordinator_flow": "Design a Coordinator flow for [USER_JOURNEY] in HomeHub (e.g., device onboarding, room setup, user settings). Include: 1) Coordinator protocol definition, 2) Child coordinator management, 3) Deep linking support, 4) State restoration, 5) Navigation animations, 6) Dismissal handling with completion callbacks.",
+      
+      "viewmodel_pattern": "Create a ViewModel for [FEATURE_NAME] following MVVM pattern in HomeHub. Requirements: 1) @Published properties for UI binding, 2) Combine pipelines for data transformation, 3) async/await methods for network/database operations, 4) Input/Output pattern separation, 5) Loading and error states, 6) Cancellable task management, 7) Memory leak prevention.",
+      
+      "service_layer": "Design a service layer for [SERVICE_TYPE] (e.g., device communication, cloud sync, local network discovery) in HomeHub. Include: 1) Protocol-based abstraction, 2) Async/await interface, 3) Combine publishers for real-time updates, 4) Error handling strategy, 5) Retry logic, 6) Mock implementation for testing, 7) Dependency injection setup.",
+      
+      "data_flow": "Map out the data flow for [FEATURE_NAME] in HomeHub from user interaction to persistence. Show: 1) View → ViewModel communication, 2) ViewModel → Service layer calls, 3) SwiftData operations, 4) Combine pipeline transformations, 5) Error propagation paths, 6) State update sequence, 7) Coordinator navigation triggers.",
+      
+      "state_management": "Design state management strategy for [COMPLEX_FEATURE] in HomeHub. Include: 1) App-level state using @Observable or StateObject, 2) Feature-level state in ViewModels, 3) Transient UI state in Views, 4) SwiftData for persistent state, 5) State synchronization across app, 6) State restoration on app launch."
+    },
+    
+    "testing_quality": {
+      "unit_tests": "Generate comprehensive unit tests for [CLASS_NAME] in HomeHub. Include: 1) Test cases for all public methods, 2) Combine publisher testing with expectations, 3) async/await test cases using async/await, 4) Mock dependencies, 5) Edge cases and error scenarios, 6) State verification, 7) Memory leak tests.",
+      
+      "viewmodel_tests": "Create unit tests for [VIEWMODEL_NAME] in HomeHub testing: 1) Initial state setup, 2) User action handling, 3) Combine publisher emissions, 4) async/await operations with XCTestExpectation, 5) Error state transitions, 6) Loading state management, 7) Navigation triggers to coordinator, 8) Service layer interactions with mocks.",
+      
+      "integration_tests": "Design integration tests for [FEATURE_NAME] flow in HomeHub covering: 1) View-ViewModel-Service integration, 2) SwiftData persistence operations, 3) Coordinator navigation flow, 4) Real-time update propagation via Combine, 5) Error recovery scenarios, 6) Multi-step user journeys.",
+      
+      "ui_tests": "Create SwiftUI UI tests for [SCREEN_NAME] in HomeHub including: 1) Element accessibility identifiers, 2) User interaction scenarios, 3) Navigation flow validation, 4) Error state displays, 5) Loading state verification, 6) Dynamic content testing, 7) Snapshot tests for UI regression.",
+      
+      "mock_services": "Create mock implementations for [SERVICE_NAME] in HomeHub for testing purposes. Include: 1) Configurable responses, 2) Delayed responses for loading states, 3) Error injection capability, 4) Combine publisher mocks, 5) State tracking for verification, 6) Thread-safe implementation."
+    },
+    
+    "performance_optimization": {
+      "memory_analysis": "Analyze and optimize memory usage in [FEATURE_NAME] of HomeHub. Check: 1) Retain cycles in Combine pipelines, 2) Coordinator reference management, 3) Task cancellation on deinit, 4) SwiftData fetch request efficiency, 5) Large object caching strategy, 6) View hierarchy depth, 7) Instrument usage patterns.",
+      
+      "combine_optimization": "Optimize Combine pipeline for [OPERATION_NAME] in HomeHub. Improve: 1) Operator chain efficiency, 2) Unnecessary republishing, 3) Debouncing/throttling for user input, 4) Share() operator usage for multiple subscribers, 5) Subscription lifecycle management, 6) Background thread operations, 7) Memory footprint.",
+      
+      "swiftdata_performance": "Optimize SwiftData queries for [ENTITY_NAME] in HomeHub. Include: 1) Fetch request predicates, 2) Batch size configuration, 3) Relationship prefetching, 4) Index strategy, 5) Background context usage, 6) Change tracking optimization, 7) Query result caching.",
+      
+      "view_performance": "Optimize SwiftUI view performance for [VIEW_NAME] in HomeHub. Address: 1) Unnecessary view updates, 2) Heavy computations in body, 3) @Published property granularity, 4) List/LazyVStack performance with large datasets, 5) Animation performance, 6) Image loading and caching, 7) Equatable conformance.",
+      
+      "network_optimization": "Optimize network operations for [FEATURE_NAME] in HomeHub. Improve: 1) Request batching, 2) Response caching strategy, 3) Background fetch configuration, 4) Connection pooling, 5) Timeout settings, 6) Retry backoff strategy, 7) Data compression."
+    },
+    
+    "documentation": {
+      "feature_documentation": "Create comprehensive documentation for [FEATURE_NAME] in HomeHub including: 1) Feature overview and user flows, 2) Architecture diagram showing MVVM + Coordinator, 3) Key components (Views, ViewModels, Coordinators, Services), 4) Data models and relationships, 5) API integration details, 6) Error handling approach, 7) Testing strategy.",
+      
+      "code_documentation": "Generate detailed code documentation for [CLASS_NAME] in HomeHub with: 1) Class/struct purpose and responsibility, 2) Public API documentation with examples, 3) Combine publishers documentation, 4) async/await method usage, 5) Thread safety notes, 6) Error types thrown, 7) Usage examples.",
+      
+      "architecture_documentation": "Document the MVVM + Coordinator architecture implementation in HomeHub covering: 1) Layer responsibilities, 2) Communication patterns between layers, 3) Coordinator hierarchy and flows, 4) Dependency injection approach, 5) State management strategy, 6) Navigation patterns, 7) Best practices and conventions.",
+      
+      "api_documentation": "Create API documentation for [SERVICE_NAME] in HomeHub including: 1) Available methods with signatures, 2) async/await usage patterns, 3) Combine publishers exposed, 4) Error types and handling, 5) Thread safety guarantees, 6) Usage examples, 7) Mock implementation for testing.",
+      
+      "onboarding_docs": "Create developer onboarding documentation for HomeHub project covering: 1) Project structure overview, 2) Setup instructions, 3) Architecture patterns used, 4) Coding conventions, 5) Common workflows (adding features, testing), 6) SwiftData model guidelines, 7) CI/CD process, 8) Troubleshooting guide."
+    },
+    
+    "code_review_refactoring": {
+      "code_review": "Review [FILE_NAME] in HomeHub for: 1) MVVM + Coordinator pattern adherence, 2) SwiftUI best practices, 3) Combine pipeline efficiency, 4) Proper async/await usage, 5) Error handling completeness, 6) Memory leak risks, 7) Thread safety, 8) Code organization, 9) Test coverage gaps, 10) Accessibility implementation.",
+      
+      "refactor_legacy": "Refactor [COMPONENT_NAME] in HomeHub from [OLD_PATTERN] to MVVM + Coordinator with: 1) Extract business logic to ViewModel, 2) Implement Combine for reactive updates, 3) Replace completion handlers with async/await, 4) Add proper navigation via Coordinator, 5) Migrate to SwiftData if applicable, 6) Add unit tests, 7) Maintain backward compatibility.",
+      
+      "extract_viewmodel": "Extract ViewModel from [VIEW_NAME] in HomeHub. Create: 1) Separate ViewModel class with @Published properties, 2) Move business logic from View, 3) Define input/output interfaces, 4) Add Combine pipelines for data transformation, 5) Implement async methods for operations, 6) Add comprehensive unit tests, 7) Update View to use new ViewModel.",
+      
+      "coordinator_refactor": "Refactor navigation in [FEATURE_NAME] to use Coordinator pattern in HomeHub. Include: 1) Define Coordinator protocol, 2) Create feature coordinator, 3) Extract navigation logic from ViewModels, 4) Setup child coordinator management, 5) Implement deep linking, 6) Add coordinator tests, 7) Update dependency injection.",
+      
+      "combine_migration": "Migrate [CLASS_NAME] from callbacks/delegates to Combine in HomeHub. Convert: 1) Callbacks to Futures/Publishers, 2) Delegates to PassthroughSubjects, 3) NotificationCenter to publishers, 4) Add proper cancellable management, 5) Chain operations efficiently, 6) Handle errors in pipeline, 7) Update tests for Combine."
+    },
+    
+    "bug_fixes": {
+      "debug_issue": "Debug and fix [ISSUE_DESCRIPTION] in HomeHub. Analyze: 1) Steps to reproduce, 2) Affected components (View/ViewModel/Service), 3) Potential race conditions in Combine/async code, 4) SwiftData concurrency issues, 5) Memory-related problems, 6) State management issues, 7) Provide fix with explanation and tests.",
+      
+      "crash_analysis": "Analyze crash in [FEATURE_NAME] with stack trace [STACK_TRACE]. Investigate: 1) Crash cause, 2) Retain cycle possibility, 3) Thread safety violations, 4) Force unwrap issues, 5) SwiftData context threading, 6) Coordinator lifecycle issues, 7) Provide fix with prevention strategy.",
+      
+      "memory_leak": "Fix memory leak in [COMPONENT_NAME] in HomeHub. Check: 1) Combine subscription management, 2) Closure capture lists, 3) Coordinator parent-child references, 4) ViewModel lifecycle, 5) Task cancellation, 6) SwiftData context retention, 7) Add instruments validation.",
+      
+      "race_condition": "Fix race condition in [FEATURE_NAME] where [RACE_DESCRIPTION]. Address: 1) Shared state access, 2) Combine publisher timing, 3) async/await execution order, 4) SwiftData thread safety, 5) Add proper synchronization, 6) Implement tests that expose the issue.",
+      
+      "ui_bug": "Fix UI issue in [VIEW_NAME] where [UI_ISSUE_DESCRIPTION]. Debug: 1) SwiftUI state updates, 2) @Published property timing, 3) View lifecycle issues, 4) Animation conflicts, 5) Layout constraint problems, 6) Provide fix maintaining smooth UX."
+    },
+    
+    "smart_home_specific": {
+      "device_communication": "Implement device communication protocol for [DEVICE_TYPE] in HomeHub. Include: 1) Device discovery mechanism (Bonjour/mDNS), 2) Connection establishment and maintenance, 3) Command/response protocol, 4) Real-time status updates via Combine, 5) Offline queue for commands, 6) Reconnection strategy, 7) Security/encryption.",
+      
+      "real_time_sync": "Build real-time synchronization for [DATA_TYPE] across devices in HomeHub. Implement: 1) CloudKit or custom sync engine, 2) Conflict resolution strategy, 3) Optimistic updates, 4) Background sync with async/await, 5) Combine publishers for changes, 6) SwiftData merge policies, 7) Offline support.",
+      
+      "device_grouping": "Create device grouping feature for HomeHub allowing [GROUPING_FUNCTIONALITY]. Include: 1) Group creation and management UI, 2) Drag-and-drop device assignment, 3) Group-level controls, 4) Synchronized state updates, 5) SwiftData relationships, 6) Bulk operations with progress tracking.",
+      
+      "notification_system": "Design push notification system for HomeHub for [NOTIFICATION_TYPE]. Implement: 1) Device state change notifications, 2) Automation trigger alerts, 3) System status updates, 4) Rich notifications with actions, 5) Notification grouping, 6) Local scheduling, 7) Deep linking to specific features.",
+      
+      "voice_control": "Integrate Siri/voice control for [DEVICE_OPERATIONS] in HomeHub. Include: 1) SiriKit intents definition, 2) Intent handling with async/await, 3) Device command execution, 4) Response generation, 5) Shortcuts support, 6) Disambiguation UI, 7) Error handling."
+    }
+  }
+}

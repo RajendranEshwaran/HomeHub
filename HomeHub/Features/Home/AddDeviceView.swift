@@ -41,7 +41,13 @@ struct AddDeviceView: View {
                     isForwardEnable: false,
                     backgroundColor: .clear,
                     foregroundColor: .text,
-                    leadingView: {},
+                    leadingView: {
+                        Button(action: {}, label: {
+                            Image(systemName: "chevron.left")
+                                .foregroundColor(.black)
+                                .aspectRatio(contentMode: .fit)
+                        })
+                    },
                     trailingView: {}
                 )
                 .frame(height: 60)
@@ -52,13 +58,13 @@ struct AddDeviceView: View {
                         VStack(alignment: .leading, spacing: 10) {
                             Text("Device Name")
                                 .font(.system(size: 16, weight: .semibold))
-                                .foregroundStyle(.white)
+                                .foregroundStyle(.black)
 
                             TextField("Enter device name", text: $deviceName)
                                 .padding()
                                 .background(Color.white.opacity(0.1))
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
-                                .foregroundStyle(.white)
+                                .foregroundStyle(.black)
                         }
                         .padding(.horizontal, 20)
 
@@ -66,13 +72,13 @@ struct AddDeviceView: View {
                         VStack(alignment: .leading, spacing: 10) {
                             Text("Device Status")
                                 .font(.system(size: 16, weight: .semibold))
-                                .foregroundStyle(.white)
+                                .foregroundStyle(.black)
 
                             TextField("Enter device status", text: $deviceStatus)
                                 .padding()
                                 .background(Color.white.opacity(0.1))
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
-                                .foregroundStyle(.white)
+                                .foregroundStyle(.black)
                         }
                         .padding(.horizontal, 20)
 
@@ -80,8 +86,9 @@ struct AddDeviceView: View {
                         VStack(alignment: .leading, spacing: 10) {
                             Text("Left Icon")
                                 .font(.system(size: 16, weight: .semibold))
-                                .foregroundStyle(.white)
-
+                                .foregroundStyle(.black)
+                                .padding()
+                            
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack(spacing: 15) {
                                     ForEach(availableIcons, id: \.self) { icon in
@@ -92,7 +99,7 @@ struct AddDeviceView: View {
                                                 .resizable()
                                                 .aspectRatio(contentMode: .fit)
                                                 .frame(width: 30, height: 30)
-                                                .foregroundStyle(iconLeft == icon ? .white : .white.opacity(0.5))
+                                                .foregroundStyle(iconLeft == icon ? .black : .black.opacity(0.5))
                                                 .padding()
                                                 .background(iconLeft == icon ? Color.white.opacity(0.2) : Color.white.opacity(0.05))
                                                 .clipShape(RoundedRectangle(cornerRadius: 10))
@@ -106,12 +113,12 @@ struct AddDeviceView: View {
                         VStack(alignment: .leading, spacing: 10) {
                             Text("Right Icon")
                                 .font(.system(size: 16, weight: .semibold))
-                                .foregroundStyle(.white)
+                                .foregroundStyle(.black)
                                 .padding(.horizontal, 20)
 
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack(spacing: 15) {
-                                    ForEach(availableIcons, id: \.self) { icon in
+                                    ForEach(availableIcons.reversed(), id: \.self) { icon in
                                         Button(action: {
                                             iconRight = icon
                                         }) {
@@ -119,7 +126,7 @@ struct AddDeviceView: View {
                                                 .resizable()
                                                 .aspectRatio(contentMode: .fit)
                                                 .frame(width: 30, height: 30)
-                                                .foregroundStyle(iconRight == icon ? .white : .white.opacity(0.5))
+                                                .foregroundStyle(iconRight == icon ? .black : .black.opacity(0.5))
                                                 .padding()
                                                 .background(iconRight == icon ? Color.white.opacity(0.2) : Color.white.opacity(0.05))
                                                 .clipShape(RoundedRectangle(cornerRadius: 10))
@@ -134,7 +141,7 @@ struct AddDeviceView: View {
                         VStack(alignment: .leading, spacing: 10) {
                             Text("Device Color")
                                 .font(.system(size: 16, weight: .semibold))
-                                .foregroundStyle(.white)
+                                .foregroundStyle(.black)
 
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack(spacing: 15) {
@@ -160,7 +167,7 @@ struct AddDeviceView: View {
                         VStack(alignment: .leading, spacing: 10) {
                             Text("Preview")
                                 .font(.system(size: 16, weight: .semibold))
-                                .foregroundStyle(.white)
+                                .foregroundStyle(.black)
                                 .padding(.horizontal, 20)
 
                             HStack {
