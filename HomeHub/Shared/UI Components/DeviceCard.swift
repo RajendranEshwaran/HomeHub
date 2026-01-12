@@ -2,7 +2,7 @@
 //  DeviceCard.swift
 //  HomeHub
 //
-//  Created by RajayGoms on 1/5/26.
+//  Created by Rajendran Eshwaran on 1/5/26.
 //
 
 import SwiftUI

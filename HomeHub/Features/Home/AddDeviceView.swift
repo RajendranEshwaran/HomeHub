@@ -2,7 +2,7 @@
 //  AddDeviceView.swift
 //  HomeHub
 //
-//  Created by RajayGoms on 1/5/26.
+//  Created by Rajendran Eshwaran on 1/5/26.
 //
 
 import SwiftUI
@@ -42,7 +42,9 @@ struct AddDeviceView: View {
                     backgroundColor: .clear,
                     foregroundColor: .text,
                     leadingView: {
-                        Button(action: {}, label: {
+                        Button(action: {
+                            coordinator.coordinatorPopToPreviousPage()
+                        }, label: {
                             Image(systemName: "chevron.left")
                                 .foregroundColor(.black)
                                 .aspectRatio(contentMode: .fit)

@@ -2,7 +2,7 @@
 //  AuthTextField.swift
 //  HomeHub
 //
-//  Created by RajayGoms on 12/22/25.
+//  Created by Rajendran Eshwaran on 12/22/25.
 //
 
 import SwiftUI

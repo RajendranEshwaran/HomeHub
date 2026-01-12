@@ -10,12 +10,15 @@ import SwiftUI
 import Combine
 
 enum AppPages: Hashable {
+   
     case login
     case signup
     case forgot
     case verification
     case homeView
     case addDeviceView
+    case deviceDetailView(device: Device)
+    
 }
 
 enum AppSheets: String, Identifiable {
@@ -67,6 +70,7 @@ class Coordinator: ObservableObject {
         case .verification: EmptyView()
         case .homeView: HomeView()
         case .addDeviceView: AddDeviceView()
+        case .deviceDetailView(let device): DeviceDetailView(deviceDetail: device)
         }
     }
     

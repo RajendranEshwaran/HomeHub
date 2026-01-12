@@ -2,7 +2,7 @@
 //  HomeView.swift
 //  HomeHub
 //
-//  Created by RajayGoms on 12/15/25.
+//  Created by Rajendran Eshwaran on 12/15/25.
 //
 
 import SwiftUI
@@ -132,7 +132,11 @@ struct HomeView: View {
                                         },
                                         onEdit: {
                                             // Handle edit action
+                                           
                                         })
+                                    .onTapGesture {
+                                        coordinator.coordinatorPushPage(page: .deviceDetailView(device: device))
+                                    }
                                 }
                             }
                             .padding(.top, 55)

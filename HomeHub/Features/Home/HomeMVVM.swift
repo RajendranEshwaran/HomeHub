@@ -2,7 +2,7 @@
 //  HomeMVVM.swift
 //  HomeHub
 //
-//  Created by RajayGoms on 12/17/25.
+//  Created by Rajendran Eshwaran on 12/17/25.
 //
 
 import Foundation
@@ -35,7 +35,7 @@ struct HomeRoom: Identifiable {
 }
 
 //MARK: - Device Model
-struct Device: Identifiable {
+struct Device: Identifiable, Hashable {
     let id = UUID()
     let deviceName: String
     let deviceStatus: String
