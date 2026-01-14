@@ -24,7 +24,7 @@ struct AddDeviceView: View {
         "fan.fill", "lamp.desk.fill", "camera.fill", "lock.fill",
         "wifi", "antenna.radiowaves.left.and.right", "bolt.fill", "wind"
     ]
-
+    let deviceTypes: [String] = []
     var body: some View {
         ZStack {
             Color.background
@@ -181,7 +181,12 @@ struct AddDeviceView: View {
                                         iconLeft: iconLeft,
                                         iconRight: iconRight,
                                         bgColor: selectedColor,
-                                        isOn: false
+                                        isOn: false,
+                                        deviceType: .generic,
+                                        acState: nil,
+                                        lightState: nil,
+                                        speakerState: nil,
+                                        musicSystemState: nil
                                     ),
                                     onToggle: { _ in },
                                     onEdit: {}
