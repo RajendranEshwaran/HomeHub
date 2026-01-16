@@ -11,11 +11,13 @@ import Combine
 struct HomeView: View {
     @StateObject private var viewModel = HomeViewModel()
     @EnvironmentObject private var coordinator: Coordinator
+    @State private var isSideMenuOpen: Bool = false
+
     let rows = [
             GridItem(.flexible(), spacing: 200),
             GridItem(.flexible(), spacing: 200)
         ]
-    
+
     var body: some View {
         ZStack {
             Color.background
@@ -25,9 +27,13 @@ struct HomeView: View {
 
                 //MARK: Navigation
                 GenericNavigation(action: {}, navigationTitle: "Home View", isBackEnable: true, isForwardEnable: true, backgroundColor: .clear, foregroundColor: .text, leadingView: {
-                    //MARK: leading button action
+                    //MARK: leading button action - Open Side Menu
 
-                    CollectionButton(action: {}, label: {
+                    CollectionButton(action: {
+                        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                            isSideMenuOpen = true
+                        }
+                    }, label: {
                         Image(systemName: "square.grid.2x2")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
@@ -170,6 +176,39 @@ struct HomeView: View {
                 }
                 .padding(.bottom, 20)
             }
+
+            // MARK: Side Menu
+            DefaultSideMenu(
+                isOpen: isSideMenuOpen,
+                onClose: {
+                    isSideMenuOpen = false
+                },
+                onEditProfile: {
+                    isSideMenuOpen = false
+                    // Navigate to Edit Profile
+                    coordinator.coordinatorPushPage(page: .profileView)
+                },
+                onEditAction: {
+                    isSideMenuOpen = false
+                    // Navigate to Edit Action
+                },
+                onAddNewAction: {
+                    isSideMenuOpen = false
+                  
+                },
+                onAddNewDevice: {
+                    isSideMenuOpen = false
+                    coordinator.coordinatorPushPage(page: .addDeviceView)
+                },
+                onSettings: {
+                    isSideMenuOpen = false
+                    // Navigate to Settings
+                },
+                onLogout: {
+                    isSideMenuOpen = false
+                    coordinator.coordinatorRootToTop()
+                }
+            )
         }
         .environmentObject(coordinator)
         .environmentObject(viewModel)
