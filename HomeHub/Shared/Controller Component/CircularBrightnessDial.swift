@@ -1,38 +1,38 @@
 //
-//  ACController.swift
+//  Untitled.swift
 //  HomeHub
 //
 //  Created by Rajendran Eshwaran on 1/15/26.
 //
 
 import SwiftUI
+import Combine
 
-struct CircularTemperatureDial: View {
-    @Binding var temperature: Double
-    let minTemp: Double
-    let maxTemp: Double
-    let step: Double
+
+// MARK: - Circular Brightness Dial
+
+struct CircularBrightnessDial: View {
+    @Binding var brightness: Double
+    let accentColor: Color
     let onChange: ((Double) -> Void)?
 
     // Dial configuration
-    private let startAngle: Double = 135  // Start from bottom-left
-    private let endAngle: Double = 405    // End at bottom-right (270° sweep)
+    private let startAngle: Double = 135
     private let dialSize: CGFloat = 250
     private let trackWidth: CGFloat = 30
+    private let minValue: Double = 0
+    private let maxValue: Double = 100
+    private let step: Double = 1
 
     @State private var isDragging: Bool = false
 
     init(
-        temperature: Binding<Double>,
-        minTemp: Double = 16,
-        maxTemp: Double = 30,
-        step: Double = 1,
+        brightness: Binding<Double>,
+        accentColor: Color = .yellow,
         onChange: ((Double) -> Void)? = nil
     ) {
-        self._temperature = temperature
-        self.minTemp = minTemp
-        self.maxTemp = maxTemp
-        self.step = step
+        self._brightness = brightness
+        self.accentColor = accentColor
         self.onChange = onChange
     }
 
@@ -76,9 +76,9 @@ struct CircularTemperatureDial: View {
                 .stroke(
                     AngularGradient(
                         colors: [
-                            Color.cyan,
-                            Color.blue,
-                            Color.cyan.opacity(0.8)
+                            accentColor,
+                            accentColor.opacity(0.7),
+                            accentColor.opacity(0.9)
                         ],
                         center: .center,
                         startAngle: .degrees(startAngle),
@@ -106,15 +106,14 @@ struct CircularTemperatureDial: View {
                 .rotationEffect(.degrees(startAngle))
                 .frame(width: dialSize, height: dialSize)
 
-            // Temperature scale markers (outside)
-            ForEach(Int(minTemp)...Int(maxTemp), id: \.self) { temp in
-                TemperatureMarker(
-                    temp: temp,
-                    minTemp: Int(minTemp),
-                    maxTemp: Int(maxTemp),
-                    currentTemp: Int(temperature),
+            // Brightness scale markers (outside)
+            ForEach(0...10, id: \.self) { index in
+                BrightnessMarker(
+                    index: index,
+                    currentBrightness: Int(brightness),
                     dialSize: dialSize,
-                    startAngle: startAngle
+                    startAngle: startAngle,
+                    accentColor: accentColor
                 )
             }
 
@@ -124,7 +123,7 @@ struct CircularTemperatureDial: View {
                     RadialGradient(
                         colors: [
                             Color.white,
-                            Color.cyan.opacity(0.8)
+                            accentColor.opacity(0.8)
                         ],
                         center: .center,
                         startRadius: 0,
@@ -132,7 +131,7 @@ struct CircularTemperatureDial: View {
                     )
                 )
                 .frame(width: 24, height: 24)
-                .shadow(color: .cyan.opacity(0.8), radius: 8, x: 0, y: 0)
+                .shadow(color: accentColor.opacity(0.8), radius: 8, x: 0, y: 0)
                 .shadow(color: .white.opacity(0.5), radius: 4, x: 0, y: 0)
                 .offset(x: thumbOffset.x, y: thumbOffset.y)
                 .scaleEffect(isDragging ? 1.2 : 1.0)
@@ -140,8 +139,8 @@ struct CircularTemperatureDial: View {
 
             // Center display (current value)
             VStack(spacing: 4) {
-                Text("\(Int(temperature))°")
-                    .font(.system(size: 56, weight: .bold, design: .rounded))
+                Text("\(Int(brightness))%")
+                    .font(.system(size: 52, weight: .bold, design: .rounded))
                     .foregroundStyle(
                         LinearGradient(
                             colors: [.black, .black.opacity(0.8)],
@@ -150,7 +149,7 @@ struct CircularTemperatureDial: View {
                         )
                     )
 
-                Text("Celsius")
+                Text("Brightness")
                     .font(.system(size: 14, weight: .medium))
                     .foregroundStyle(.black.opacity(0.6))
             }
@@ -161,7 +160,7 @@ struct CircularTemperatureDial: View {
             DragGesture(minimumDistance: 0)
                 .onChanged { value in
                     isDragging = true
-                    updateTemperature(at: value.location)
+                    updateBrightness(at: value.location)
                 }
                 .onEnded { _ in
                     isDragging = false
@@ -172,8 +171,7 @@ struct CircularTemperatureDial: View {
     // MARK: - Computed Properties
 
     private var progressValue: CGFloat {
-        let range = maxTemp - minTemp
-        return CGFloat((temperature - minTemp) / range)
+        return CGFloat(brightness / maxValue)
     }
 
     private var thumbOffset: CGPoint {
@@ -189,93 +187,39 @@ struct CircularTemperatureDial: View {
 
     // MARK: - Methods
 
-    private func updateTemperature(at location: CGPoint) {
+    private func updateBrightness(at location: CGPoint) {
         let center = CGPoint(x: (dialSize + 80) / 2, y: (dialSize + 80) / 2)
         let vector = CGPoint(x: location.x - center.x, y: location.y - center.y)
 
-        // Calculate angle from center
         var angle = atan2(vector.y, vector.x) * 180 / .pi
-
-        // Normalize angle to our dial's coordinate system
         angle = angle - startAngle
         if angle < 0 { angle += 360 }
 
-        // Only update if within valid range (0-270 degrees)
         guard angle >= 0 && angle <= 270 else { return }
 
-        // Convert angle to temperature
         let progress = angle / 270
-        let range = maxTemp - minTemp
-        var newTemp = minTemp + (progress * range)
+        var newValue = progress * maxValue
 
-        // Snap to step
-        newTemp = round(newTemp / step) * step
-        newTemp = max(minTemp, min(maxTemp, newTemp))
+        newValue = round(newValue / step) * step
+        newValue = max(minValue, min(maxValue, newValue))
 
-        if newTemp != temperature {
-            temperature = newTemp
-            onChange?(newTemp)
+        if newValue != brightness {
+            brightness = newValue
+            onChange?(newValue)
         }
     }
 }
 
-// MARK: - Temperature Marker View
 
-struct TemperatureMarker: View {
-    let temp: Int
-    let minTemp: Int
-    let maxTemp: Int
-    let currentTemp: Int
-    let dialSize: CGFloat
-    let startAngle: Double
-
-    private var angle: Double {
-        let range = Double(maxTemp - minTemp)
-        let progress = Double(temp - minTemp) / range
-        return startAngle + (270 * progress)
-    }
-
-    private var isActive: Bool {
-        temp <= currentTemp
-    }
-
-    private var isMajor: Bool {
-        temp % 2 == 0
-    }
-
-    var body: some View {
-        let radius = dialSize / 2 + (isMajor ? 30 : 24)
-        let radians = CGFloat(angle * .pi / 180)
-        let x = Foundation.cos(radians) * radius
-        let y = Foundation.sin(radians) * radius
-
-        Group {
-            if isMajor {
-                // Major marker with number
-                Text("\(temp)")
-                    .font(.system(size: 12, weight: isActive ? .bold : .regular))
-                    .foregroundStyle(isActive ? .black : .black.opacity(0.4))
-            } else {
-                // Minor marker (dot)
-                Circle()
-                    .fill(isActive ? Color.black.opacity(0.6) : Color.black.opacity(0.2))
-                    .frame(width: 4, height: 4)
-            }
-        }
-        .offset(x: x, y: y)
-    }
-}
-
-// MARK: - Preview
-
-#Preview {
+#Preview("Brightness Dial") {
     ZStack {
         Color(red: 0.1, green: 0.1, blue: 0.15).ignoresSafeArea()
 
-        CircularTemperatureDial(
-            temperature: .constant(24),
-            onChange: { temp in
-                print("Temperature changed to: \(temp)")
+        CircularBrightnessDial(
+            brightness: .constant(75),
+            accentColor: .yellow,
+            onChange: { value in
+                print("Brightness changed to: \(value)")
             }
         )
     }
