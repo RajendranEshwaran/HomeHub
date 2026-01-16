@@ -40,6 +40,7 @@ enum DeviceType: String, Codable, Hashable {
     case light = "Light"
     case speaker = "Speaker"
     case musicSystem = "Music System"
+    case television = "Smart TV"
     case generic = "Generic Device"
 }
 
@@ -148,10 +149,10 @@ class HomeViewModel: ObservableObject {
                 iconRight: "wifi",
                 bgColor: .orange,
                 isOn: true,
-                deviceType: .generic,
+                deviceType: .television,
                 acState: nil,
                 lightState: nil,
-                speakerState: nil,
+                speakerState: SpeakerState(volume: 50.0, isPlaying: true, currentTrack: "Summer Vibes Mix"),
                 musicSystemState: nil
             ),
             Device(
@@ -208,7 +209,7 @@ class HomeViewModel: ObservableObject {
             deviceType: deviceType,
             acState: deviceType == .ac ? ACState() : nil,
             lightState: deviceType == .light ? LightState() : nil,
-            speakerState: deviceType == .speaker ? SpeakerState() : nil,
+            speakerState: deviceType == .speaker || deviceType == .speaker ? SpeakerState() : nil,
             musicSystemState: deviceType == .musicSystem ? MusicSystemState() : nil
         )
         devices.append(newDevice)

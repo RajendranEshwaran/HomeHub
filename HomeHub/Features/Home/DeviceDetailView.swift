@@ -187,7 +187,7 @@ struct DeviceDetailView: View {
                 emptyStateView()
             }
 
-        case .speaker:
+        case .speaker, .television:
             if let speakerState = deviceDetail.speakerState {
                 SpeakerControllerView(
                     state: speakerState,
@@ -196,12 +196,11 @@ struct DeviceDetailView: View {
                     },
                     onPlayPauseToggle: {
                         viewModel.toggleSpeakerPlayback(device: deviceDetail)
-                    }
-                )
+                    }, deviceDetail: deviceDetail)
             } else {
                 emptyStateView()
             }
-
+            
         case .musicSystem:
             if let musicState = deviceDetail.musicSystemState {
                 MusicSystemControllerView(
