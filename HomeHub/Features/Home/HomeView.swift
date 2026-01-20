@@ -185,16 +185,15 @@ struct HomeView: View {
                 },
                 onEditProfile: {
                     isSideMenuOpen = false
-                    // Navigate to Edit Profile
                     coordinator.coordinatorPushPage(page: .profileView)
                 },
                 onEditAction: {
                     isSideMenuOpen = false
-                    // Navigate to Edit Action
+                    coordinator.coordinatorPushPage(page: .editActionView)
                 },
                 onAddNewAction: {
                     isSideMenuOpen = false
-                  
+                    coordinator.coordinatorPushPage(page: .addActionView)
                 },
                 onAddNewDevice: {
                     isSideMenuOpen = false

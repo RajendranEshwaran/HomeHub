@@ -20,6 +20,8 @@ enum AppPages: Hashable {
     case deviceDetailView(device: Device)
     case profileView
     case settingView
+    case addActionView
+    case editActionView
     
 }
 
@@ -75,6 +77,8 @@ class Coordinator: ObservableObject {
         case .deviceDetailView(let device): DeviceDetailView(deviceDetail: device)
         case .profileView: ProfileView()
         case .settingView: SettingView()
+        case .addActionView: AddActionView()
+        case .editActionView: EditActionView()
         }
     }
     
