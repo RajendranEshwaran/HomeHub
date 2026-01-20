@@ -202,7 +202,7 @@ struct HomeView: View {
                 },
                 onSettings: {
                     isSideMenuOpen = false
-                    // Navigate to Settings
+                    coordinator.coordinatorPushPage(page: .settingView)
                 },
                 onLogout: {
                     isSideMenuOpen = false
