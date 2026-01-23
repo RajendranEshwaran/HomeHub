@@ -20,7 +20,7 @@ struct AddActionView: View {
     @State private var selectedColor: Color = .orange
     @State private var selectedActionId: UUID?
     let availableColors: [Color] = [.orange, .blue, .purple, .green, .red, .yellow, .pink, .indigo]
-        
+    @State private var isOn: Bool = false
     var body: some View {
         ZStack {
             Color.background.ignoresSafeArea()
@@ -81,9 +81,14 @@ struct AddActionView: View {
                         Text("You can turn ON or OFF any devices so you can access all devices in a one click ")
                             .foregroundStyle(.gray)
                             .font(.system(size: 12))
+                            .padding(12)
+                        
+                        ActionDeviceCard(deviceName: "test", roomName: "test", isOn: $isOn)
                     }
                 })
-
+                .padding(.horizontal, 20)
+                .padding(.top, 16)
+                
                 Spacer()
                 
         

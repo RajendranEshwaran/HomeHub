@@ -40,7 +40,7 @@ class Coordinator: ObservableObject {
     @Published var currentSheet: AppSheets?
     @Published var currentFullCover: AppFullCover?
     @Published var navigationPath = NavigationPath()
-    @Published var rootPage: AppPages = .homeView
+    @Published var rootPage: AppPages = .login
     
     func coordinatorPresentPage(page: AppPages) { navigationPath.append(page) }
     
