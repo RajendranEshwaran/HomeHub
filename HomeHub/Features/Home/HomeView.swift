@@ -44,7 +44,9 @@ struct HomeView: View {
                 }, trailingView: {
                     //MARK: trailing button action
 
-                    CollectionButton(action: {}, label: {
+                    CollectionButton(action: {
+                        coordinator.coordinatorPushPage(page: .profileView)
+                    }, label: {
                         Image(systemName: "person.crop.circle")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
