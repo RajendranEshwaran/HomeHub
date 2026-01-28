@@ -16,9 +16,9 @@ struct DeviceDetailView: View {
 
     var body: some View {
         ZStack {
-            Color.background
-                .ignoresSafeArea()
-
+//            Color.background
+//                .ignoresSafeArea()
+            GlassyBackground()
             VStack(spacing: 0) {
                 // Navigation Header
                 GenericNavigation(
@@ -27,11 +27,11 @@ struct DeviceDetailView: View {
                     isBackEnable: true,
                     isForwardEnable: false,
                     backgroundColor: .clear,
-                    foregroundColor: .text,
+                    foregroundColor: .white,
                     leadingView: {
                         TrailingNavigationBarItemButton(icon: "", action: {
                             coordinator.coordinatorPopToPreviousPage()
-                        })
+                        }, fontColor: .white)
                     },
                     trailingView: {}
                 )

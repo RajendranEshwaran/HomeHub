@@ -11,11 +11,12 @@ import Combine
 struct TrailingNavigationBarItemButton: View {
     let icon: String?
     let action: () -> Void
+    let fontColor: Color?
     var body: some View {
         VStack{
             Button(action: action, label: {
                 Image(systemName: "chevron.left")
-                    .foregroundColor(.black)
+                    .foregroundColor(fontColor)
                     .aspectRatio(contentMode: .fit)
             })
         }
@@ -26,11 +27,12 @@ struct TrailingNavigationBarItemButton: View {
 struct LeadingNavigationBarItemButton: View {
     let icon: String?
     let action: () -> Void
+    let fontColor: Color?
     var body: some View {
         VStack{
             Button(action: action, label: {
                 Image(systemName: "chevron.left")
-                    .foregroundColor(.black)
+                    .foregroundColor(fontColor)
                     .aspectRatio(contentMode: .fit)
             })
         }

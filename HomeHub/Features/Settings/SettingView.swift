@@ -32,7 +32,7 @@ struct SettingView: View {
                     leadingView: {
                         TrailingNavigationBarItemButton(icon: "", action: {
                             coordinator.coordinatorPopToPreviousPage()
-                        })
+                        }, fontColor: .white)
                     },
                     trailingView: {
                         Button(action: {

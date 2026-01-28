@@ -72,7 +72,7 @@ struct CollectionButton<Label: View>: View {
                         lineWidth: 1.5
                     )
             )
-            .border(.white, width: 0.75)
+            //.border(.white, width: 0.75)
             .clipShape(.rect(cornerRadius: clipShape ?? 0))
             .shadow(color: bgColor.opacity(0.3), radius: radius ?? 0, x: 0, y: 5)
             .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 10)

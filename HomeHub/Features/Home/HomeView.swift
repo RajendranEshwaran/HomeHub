@@ -20,13 +20,14 @@ struct HomeView: View {
 
     var body: some View {
         ZStack {
-            Color.background
-                .ignoresSafeArea(edges: .all)
+            GlassyBackground()
 
+//            Color.background
+//                .ignoresSafeArea(edges: .all)
             VStack(spacing: 0) {
 
                 //MARK: Navigation
-                GenericNavigation(action: {}, navigationTitle: "Home View", isBackEnable: true, isForwardEnable: true, backgroundColor: .clear, foregroundColor: .text, leadingView: {
+                GenericNavigation(action: {}, navigationTitle: "Home View", isBackEnable: true, isForwardEnable: true, backgroundColor: .clear, foregroundColor: .white, leadingView: {
                     //MARK: leading button action - Open Side Menu
 
                     CollectionButton(action: {
@@ -106,6 +107,7 @@ struct HomeView: View {
                             Text("Available Devices")
                                 .font(.system(size: 18, weight: .bold, design: .default))
                                 .padding(.leading, 20)
+                                .foregroundStyle(.white)
 
                             ZStack {
                                 Text("\(viewModel.availableDevices)")

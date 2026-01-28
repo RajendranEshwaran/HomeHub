@@ -33,7 +33,7 @@ struct EditActionView: View {
                     leadingView: {
                         TrailingNavigationBarItemButton(icon: "", action: {
                             coordinator.coordinatorPopToPreviousPage()
-                        })
+                        }, fontColor: .white)
                     },
                     trailingView: {
                         Button(action: {
