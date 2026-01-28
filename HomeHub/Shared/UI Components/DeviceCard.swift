@@ -12,7 +12,7 @@ import Foundation
 struct DeviceCard: View {
     let device: Device
     let onToggle: (Bool) -> Void
-    let onEdit: () -> Void
+    let onDelete: () -> Void
 
     var body: some View {
         VStack(spacing: 15) {
@@ -32,12 +32,11 @@ struct DeviceCard: View {
 
                 Spacer()
 
-                Button(action: onEdit) {
-                    Image(systemName: "ellipsis")
+                Button(action: onDelete) {
+                    Image(systemName: "trash")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 20, height: 20)
-                        .rotationEffect(.degrees(90))
                         .foregroundStyle(.white)
                 }
             }

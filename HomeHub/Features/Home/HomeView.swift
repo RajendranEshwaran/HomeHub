@@ -13,9 +13,9 @@ struct HomeView: View {
     @EnvironmentObject private var coordinator: Coordinator
     @State private var isSideMenuOpen: Bool = false
 
-    let rows = [
-            GridItem(.flexible(), spacing: 200),
-            GridItem(.flexible(), spacing: 200)
+    let coloms = [
+            GridItem(.flexible()),
+            GridItem(.flexible())
         ]
 
     var body: some View {
@@ -56,105 +56,90 @@ struct HomeView: View {
                 }).frame(height: 60)
 
                 ScrollView {
-                    GeometryReader { geometry in
-                        VStack {
-                            HStack(spacing: 15) {
-                                //MARK: Wish Display
-                                ForEach(viewModel.wishes) { wish in
-                                    CollectionButton(action: {}, label: {
-                                        HStack {
-                                            Image(systemName: wish.icon)
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fit)
-                                                .frame(width: 20, height: 20)
-                                            
-                                            Text(wish.greeting)
-                                                .font(.headline)
-                                        }
-                                        .padding(.horizontal, 10)
-                                    }, bgColor: wish.bgColor, clipShape: 30, radius: 10, size: CGSize(width: 180, height: 55))
-                                }
-                            }
-                            HStack(spacing: 15) {
-                                //MARK: Home Status Display
-                                ForEach(viewModel.homeStatuses) { status in
-                                    CollectionButton(action: {}, label: {
-                                        HStack {
-                                            Image(systemName: status.icon)
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fit)
-                                                .frame(width: 20, height: 20)
-                                            
-                                            Text(status.status)
-                                                .font(.headline)
-                                        }
-                                        .padding(.horizontal, 10)
-                                    }, bgColor: status.bgColor, clipShape: 30, radius: 10, size: CGSize(width: 180, height: 55))
-                                }
-                            }
-                            
-                            // MARK: White line
-                            Rectangle()
-                                .fill(.white)
-                                .frame(width: geometry.size.width, height: 6)
-                                .padding(.horizontal, 20)
-                                .padding(.vertical, 20)
-                            
-                            // MARK: Available Devices
-                            HStack {
-                                Text("Available Devices")
-                                    .font(.system(size: 18, weight: .bold, design: .default))
-                                    .padding(.leading, 20)
+                    VStack(spacing: 0) {
+                        HStack(spacing: 15) {
+                            //MARK: Wish Display
+                            ForEach(viewModel.wishes) { wish in
+                                CollectionButton(action: {}, label: {
+                                    HStack {
+                                        Image(systemName: wish.icon)
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 20, height: 20)
 
-                                ZStack() {
-                                    Text("\(viewModel.availableDevices)")
-                                        .font(.headline)
-                                        .foregroundStyle(.white)
-                                    Circle()
-                                        .fill(Color.black)
-                                        .frame(width: 25, height: 25)
-                                        .zIndex(-1)
-                                }
-
-                                Spacer()
-                            }
-
-                            // MARK: Rooms Names
-                            HStack {
-                                Text("First room")
-                                    .font(.system(size: 15, weight: .regular, design: .default))
-                                    .foregroundStyle(.gray)
-                                    .padding(.leading, 20)
-
-                                Spacer()
-                            }
-                            .padding(.top, 10)
-
-                            // MARK: Device Cards
-                            LazyHGrid(rows: rows, spacing: 50) {
-                                ForEach(viewModel.devices) { device in
-                                    DeviceCard(
-                                        device: device,
-                                        onToggle: { isOn in
-                                            viewModel.toggleDevice(device: device, isOn: isOn)
-                                        },
-                                        onEdit: {
-                                            // Handle edit action
-                                           
-                                        })
-                                    .onTapGesture {
-                                        coordinator.coordinatorPushPage(page: .deviceDetailView(device: device))
+                                        Text(wish.greeting)
+                                            .font(.headline)
                                     }
-                                }
+                                    .padding(.horizontal, 10)
+                                }, bgColor: wish.bgColor, clipShape: 30, radius: 10, size: CGSize(width: 180, height: 55))
                             }
-                            .padding(.top, 55)
-                            .padding(.horizontal, 20)
-                        
                         }
                         .padding(.top, 20)
-                        .frame(width: geometry.size.width)
+                        Spacer()
+                        HStack(spacing: 15) {
+                            //MARK: Home Status Display
+                            ForEach(viewModel.homeStatuses) { status in
+                                CollectionButton(action: {}, label: {
+                                    HStack {
+                                        Image(systemName: status.icon)
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 20, height: 20)
+
+                                        Text(status.status)
+                                            .font(.headline)
+                                    }
+                                    .padding(.horizontal, 10)
+                                }, bgColor: status.bgColor, clipShape: 30, radius: 10, size: CGSize(width: 180, height: 55))
+                            }
+                        }
+
+                        // MARK: White line
+                        Rectangle()
+                            .fill(.white)
+                            .frame(height: 6)
+                            .padding(.horizontal, 20)
+                            .padding(.vertical, 20)
+
+                        // MARK: Available Devices
+                        HStack {
+                            Text("Available Devices")
+                                .font(.system(size: 18, weight: .bold, design: .default))
+                                .padding(.leading, 20)
+
+                            ZStack {
+                                Text("\(viewModel.availableDevices)")
+                                    .font(.headline)
+                                    .foregroundStyle(.white)
+                                Circle()
+                                    .fill(Color.black)
+                                    .frame(width: 25, height: 25)
+                                    .zIndex(-1)
+                            }
+
+                            Spacer()
+                        }
+
+                        // MARK: Device Cards
+                        LazyVGrid(columns: coloms, spacing: 20) {
+                            ForEach(viewModel.devices) { device in
+                                DeviceCard(
+                                    device: device,
+                                    onToggle: { isOn in
+                                        viewModel.toggleDevice(device: device, isOn: isOn)
+                                    },
+                                    onDelete: {
+                                        viewModel.removeDevice(device: device)
+                                    })
+                                .onTapGesture {
+                                    coordinator.coordinatorPushPage(page: .deviceDetailView(device: device))
+                                }
+                            }
+                        }
+                        .padding(.top, 20)
+                        .padding(.horizontal, 20)
+                        .padding(.bottom, 100)
                     }
-                    
                 }
             }
 

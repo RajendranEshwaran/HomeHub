@@ -141,60 +141,7 @@ class HomeViewModel: ObservableObject {
             HomeRoom(roomName: "Bathroom", icon: "shower.fill", bgColor: .blue, deviceCount: 1)
         ]
 
-        self.devices = [
-            Device(
-                deviceName: "Smart TV",
-                deviceStatus: "Connected",
-                iconLeft: "tv.fill",
-                iconRight: "wifi",
-                bgColor: .orange,
-                isOn: true,
-                deviceType: .television,
-                acState: nil,
-                lightState: nil,
-                speakerState: SpeakerState(volume: 50.0, isPlaying: true, currentTrack: "Summer Vibes Mix"),
-                musicSystemState: nil
-            ),
-            Device(
-                deviceName: "Air Conditioner",
-                deviceStatus: "24°C - Cool Mode",
-                iconLeft: "snowflake",
-                iconRight: "wind",
-                bgColor: .blue,
-                isOn: true,
-                deviceType: .ac,
-                acState: ACState(temperature: 24.0, fanSpeed: .medium, mode: .cool),
-                lightState: nil,
-                speakerState: nil,
-                musicSystemState: nil
-            ),
-            Device(
-                deviceName: "Smart Lights",
-                deviceStatus: "100% Brightness",
-                iconLeft: "lightbulb.fill",
-                iconRight: "antenna.radiowaves.left.and.right",
-                bgColor: .yellow,
-                isOn: true,
-                deviceType: .light,
-                acState: nil,
-                lightState: LightState(brightness: 100.0, color: .white),
-                speakerState: nil,
-                musicSystemState: nil
-            ),
-            Device(
-                deviceName: "Speaker",
-                deviceStatus: "Playing",
-                iconLeft: "hifispeaker.fill",
-                iconRight: "music.note",
-                bgColor: .purple,
-                isOn: true,
-                deviceType: .speaker,
-                acState: nil,
-                lightState: nil,
-                speakerState: SpeakerState(volume: 50.0, isPlaying: true, currentTrack: "Summer Vibes Mix"),
-                musicSystemState: nil
-            )
-        ]
+        self.devices = []
         updateAvailableDevices()
     }
 
@@ -209,10 +156,15 @@ class HomeViewModel: ObservableObject {
             deviceType: deviceType,
             acState: deviceType == .ac ? ACState() : nil,
             lightState: deviceType == .light ? LightState() : nil,
-            speakerState: deviceType == .speaker || deviceType == .speaker ? SpeakerState() : nil,
+            speakerState: (deviceType == .speaker || deviceType == .television) ? SpeakerState() : nil,
             musicSystemState: deviceType == .musicSystem ? MusicSystemState() : nil
         )
         devices.append(newDevice)
+        updateAvailableDevices()
+    }
+
+    func removeDevice(device: Device) {
+        devices.removeAll { $0.id == device.id }
         updateAvailableDevices()
     }
 

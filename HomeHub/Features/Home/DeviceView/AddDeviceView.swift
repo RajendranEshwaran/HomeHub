@@ -17,6 +17,7 @@ struct AddDeviceView: View {
     @State private var iconLeft: String = "lightbulb.fill"
     @State private var iconRight: String = "wifi"
     @State private var selectedColor: Color = .orange
+    @State private var selectedDeviceType: DeviceType = .generic
 
     let availableColors: [Color] = [.orange, .blue, .purple, .green, .red, .yellow, .pink, .indigo]
     let availableIcons: [String] = [
@@ -24,7 +25,7 @@ struct AddDeviceView: View {
         "fan.fill", "lamp.desk.fill", "camera.fill", "lock.fill",
         "wifi", "antenna.radiowaves.left.and.right", "bolt.fill", "wind"
     ]
-    let deviceTypes: [String] = []
+    let deviceTypes: [DeviceType] = [.ac, .light, .speaker, .musicSystem, .television, .generic]
     var body: some View {
         ZStack {
             Color.background
@@ -139,11 +140,46 @@ struct AddDeviceView: View {
                             }
                         }
 
+                        //MARK: Device Type Selection
+                        VStack(alignment: .leading, spacing: 10) {
+                            Text("Device Type")
+                                .font(.system(size: 16, weight: .semibold))
+                                .foregroundStyle(.black)
+                                .padding(.horizontal, 20)
+
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack(spacing: 12) {
+                                    ForEach(deviceTypes, id: \.self) { type in
+                                        Button(action: {
+                                            selectedDeviceType = type
+                                            applyDeviceTypeDefaults(type)
+                                        }) {
+                                            VStack(spacing: 8) {
+                                                Image(systemName: iconForDeviceType(type))
+                                                    .resizable()
+                                                    .aspectRatio(contentMode: .fit)
+                                                    .frame(width: 24, height: 24)
+                                                Text(type.rawValue)
+                                                    .font(.system(size: 12, weight: .medium))
+                                                    .lineLimit(1)
+                                            }
+                                            .foregroundStyle(selectedDeviceType == type ? .white : .black.opacity(0.7))
+                                            .frame(width: 90, height: 70)
+                                            .background(selectedDeviceType == type ? selectedColor : Color.white.opacity(0.1))
+                                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                                        }
+                                    }
+                                }
+                                .padding(.horizontal, 20)
+                            }
+                        }
+
                         //MARK: Color Selection
                         VStack(alignment: .leading, spacing: 10) {
                             Text("Device Color")
                                 .font(.system(size: 16, weight: .semibold))
                                 .foregroundStyle(.black)
+                                .padding(.horizontal, 20)
 
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack(spacing: 15) {
@@ -177,19 +213,19 @@ struct AddDeviceView: View {
                                 DeviceCard(
                                     device: Device(
                                         deviceName: deviceName.isEmpty ? "Device Name" : deviceName,
-                                        deviceStatus: deviceStatus.isEmpty ? "Status" : deviceStatus,
+                                        deviceStatus: deviceStatus.isEmpty ? defaultStatusForType(selectedDeviceType) : deviceStatus,
                                         iconLeft: iconLeft,
                                         iconRight: iconRight,
                                         bgColor: selectedColor,
                                         isOn: false,
-                                        deviceType: .generic,
-                                        acState: nil,
-                                        lightState: nil,
-                                        speakerState: nil,
-                                        musicSystemState: nil
+                                        deviceType: selectedDeviceType,
+                                        acState: selectedDeviceType == .ac ? ACState() : nil,
+                                        lightState: selectedDeviceType == .light ? LightState() : nil,
+                                        speakerState: (selectedDeviceType == .speaker || selectedDeviceType == .television) ? SpeakerState() : nil,
+                                        musicSystemState: selectedDeviceType == .musicSystem ? MusicSystemState() : nil
                                     ),
                                     onToggle: { _ in },
-                                    onEdit: {}
+                                    onDelete: {}
                                 )
                                 Spacer()
                             }
@@ -199,13 +235,15 @@ struct AddDeviceView: View {
                         //MARK: Add Button
                         CollectionButton(
                             action: {
-                                if !deviceName.isEmpty && !deviceStatus.isEmpty {
+                                if !deviceName.isEmpty {
+                                    let status = deviceStatus.isEmpty ? defaultStatusForType(selectedDeviceType) : deviceStatus
                                     viewModel.addDevice(
                                         deviceName: deviceName,
-                                        deviceStatus: deviceStatus,
+                                        deviceStatus: status,
                                         iconLeft: iconLeft,
                                         iconRight: iconRight,
-                                        bgColor: selectedColor
+                                        bgColor: selectedColor,
+                                        deviceType: selectedDeviceType
                                     )
                                     coordinator.coordinatorPopToPreviousPage()
                                 }
@@ -227,5 +265,56 @@ struct AddDeviceView: View {
             }
         }
         .navigationBarHidden(true)
+    }
+
+    private func iconForDeviceType(_ type: DeviceType) -> String {
+        switch type {
+        case .ac: return "snowflake"
+        case .light: return "lightbulb.fill"
+        case .speaker: return "hifispeaker.fill"
+        case .musicSystem: return "hifispeaker.2.fill"
+        case .television: return "tv.fill"
+        case .generic: return "antenna.radiowaves.left.and.right"
+        }
+    }
+
+    private func applyDeviceTypeDefaults(_ type: DeviceType) {
+        switch type {
+        case .ac:
+            iconLeft = "snowflake"
+            iconRight = "wind"
+            selectedColor = .blue
+        case .light:
+            iconLeft = "lightbulb.fill"
+            iconRight = "antenna.radiowaves.left.and.right"
+            selectedColor = .yellow
+        case .speaker:
+            iconLeft = "hifispeaker.fill"
+            iconRight = "music.note"
+            selectedColor = .purple
+        case .musicSystem:
+            iconLeft = "hifispeaker.2.fill"
+            iconRight = "music.note"
+            selectedColor = .pink
+        case .television:
+            iconLeft = "tv.fill"
+            iconRight = "wifi"
+            selectedColor = .orange
+        case .generic:
+            iconLeft = "lightbulb.fill"
+            iconRight = "wifi"
+            selectedColor = .orange
+        }
+    }
+
+    private func defaultStatusForType(_ type: DeviceType) -> String {
+        switch type {
+        case .ac: return "24°C - Cool"
+        case .light: return "100% Brightness"
+        case .speaker: return "Ready"
+        case .musicSystem: return "Ready"
+        case .television: return "Connected"
+        case .generic: return "Connected"
+        }
     }
 }
