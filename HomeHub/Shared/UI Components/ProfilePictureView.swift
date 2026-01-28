@@ -2,7 +2,7 @@
 //  ProfilePictureView.swift
 //  HomeHub
 //
-//  Created by RajayGoms on 1/20/26.
+//  Created by Rajendran Eshwaran on 1/20/26.
 //
 
 import SwiftUI

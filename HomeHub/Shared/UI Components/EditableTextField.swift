@@ -2,7 +2,7 @@
 //  EditableTextField.swift
 //  HomeHub
 //
-//  Created by RajayGoms on 1/20/26.
+//  Created by Rajendran Eshwaran on 1/20/26.
 //
 
 import SwiftUI
@@ -15,14 +15,23 @@ struct EditableTextField: View {
     var keyboardType: UIKeyboardType = .default
     var isLoading: Bool = false
     var autocapitalization: TextInputAutocapitalization = .never
-
+    var bgColor: Color?
+    var height: CGFloat = 60
     var body: some View {
         Group {
             if isEditable {
-                TextField(placeholder, text: $text)
-                    .textInputAutocapitalization(autocapitalization)
-                    .keyboardType(keyboardType)
-                    .disabled(isLoading)
+                if height > 100 {
+                    TextField(placeholder, text: $text, axis: .vertical)
+                        .textInputAutocapitalization(autocapitalization)
+                        .keyboardType(keyboardType)
+                        .disabled(isLoading)
+                        .lineLimit(5...10)
+                } else {
+                    TextField(placeholder, text: $text)
+                        .textInputAutocapitalization(autocapitalization)
+                        .keyboardType(keyboardType)
+                        .disabled(isLoading)
+                }
             } else {
                 HStack {
                     Text(text.isEmpty ? placeholder : text)
@@ -32,7 +41,8 @@ struct EditableTextField: View {
             }
         }
         .padding(.horizontal, 12)
-        .frame(height: 60)
+        .frame(height: height, alignment: .top)
+        .padding(.top, height > 100 ? 16 : 0)
         .background {
             glassyBackground
         }
@@ -44,8 +54,8 @@ struct EditableTextField: View {
             .fill(
                 LinearGradient(
                     colors: [
-                        Color.purple.opacity(isEditable ? 0.3 : 0.15),
-                        Color.purple.opacity(isEditable ? 0.3 : 0.15)
+                        bgColor ?? .purple .opacity(isEditable ? 0.3 : 0.15),
+                        bgColor ?? .purple .opacity(isEditable ? 0.3 : 0.15)
                     ],
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing

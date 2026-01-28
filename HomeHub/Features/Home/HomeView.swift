@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 
 struct HomeView: View {
-    @StateObject private var viewModel = HomeViewModel()
+    @EnvironmentObject private var viewModel: HomeViewModel
     @EnvironmentObject private var coordinator: Coordinator
     @State private var isSideMenuOpen: Bool = false
 
@@ -221,4 +221,5 @@ struct HomeView: View {
 #Preview {
     HomeView()
         .environmentObject(Coordinator())
+        .environmentObject(HomeViewModel())
 }
